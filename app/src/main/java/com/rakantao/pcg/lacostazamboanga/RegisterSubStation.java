@@ -83,6 +83,7 @@ public class RegisterSubStation extends AppCompatActivity implements View.OnClic
                         "PANGLAO",
                         "LOAY",
                         "GETAFE",
+                        "TAGBILARAN",
                         "PRESIDENT CARLOS P GARCIA"
                 };
 
@@ -173,6 +174,7 @@ public class RegisterSubStation extends AppCompatActivity implements View.OnClic
                             || getStation.equals("PANGLAO")
                             || getStation.equals("LOAY")
                             || getStation.equals("GETAFE")
+                            || getStation.equals("TAGBILARAN")
                             || getStation.equals("PRESIDENT CARLOS P GARCIA")) {
 
                         MyStation = "CGS BOHOL";

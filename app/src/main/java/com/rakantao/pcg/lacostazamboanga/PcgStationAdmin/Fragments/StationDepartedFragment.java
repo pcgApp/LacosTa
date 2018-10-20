@@ -622,6 +622,32 @@ public class StationDepartedFragment extends Fragment {
                                                         .child(model.getKey())
                                                         .child("ActualTimeArrived");
                                                 databaseReference5.setValue(date);
+
+
+                                                DatabaseReference setArrivedDashboard = FirebaseDatabase.getInstance()
+                                                        .getReference("VesselsDashBoardAdmin")
+                                                        .child(model.getScheduleDay())
+                                                        .child(model.getKey())
+                                                        .child("VesselStatus");
+                                                setArrivedDashboard.setValue("Arrived");
+
+                                                DatabaseReference setDistressStatus = FirebaseDatabase.getInstance()
+                                                        .getReference("VesselsDashBoardAdmin")
+                                                        .child(model.getScheduleDay())
+                                                        .child(model.getKey())
+                                                        .child("DistressStatus");
+                                                setDistressStatus.setValue("None");
+
+                                                DatabaseReference changeDistressStatus = FirebaseDatabase.getInstance()
+                                                        .getReference("VesselSchedule")
+                                                        .child(model.getScheduleDay())
+                                                        .child("Departed")
+                                                        .child(model.getKey())
+                                                        .child("DistressStatus");
+
+                                                changeDistressStatus.setValue("None");
+
+
                                                 //Schedule
                                                 //Move Query
                                                 DatabaseReference From = FirebaseDatabase.getInstance()
@@ -637,6 +663,7 @@ public class StationDepartedFragment extends Fragment {
                                                         .child(model.getKey());
 
                                                 moveFirebaseRecord1(From ,To);
+
                                                 //Move Query
 
                                             }
@@ -721,4 +748,5 @@ public class StationDepartedFragment extends Fragment {
             }
         });
     }
+
 }

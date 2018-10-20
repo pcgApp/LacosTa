@@ -1,14 +1,20 @@
 package com.rakantao.pcg.lacostazamboanga.PcgSubStationAdmin.Fragments;
 
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,7 +40,6 @@ import com.rakantao.pcg.lacostazamboanga.PCGAdmin.Activities.ViewDetailedVessels
 import com.rakantao.pcg.lacostazamboanga.PCGAdmin.Datas.DataVesselSched;
 import com.rakantao.pcg.lacostazamboanga.PCGAdmin.ViewHolders.DepartedViewHolder;
 import com.rakantao.pcg.lacostazamboanga.PcgStationAdmin.Activities.DetailedReport;
-import com.rakantao.pcg.lacostazamboanga.PcgSubStationAdmin.Activities.SubStationDashBoardActivity;
 import com.rakantao.pcg.lacostazamboanga.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
@@ -50,7 +55,7 @@ import java.util.HashMap;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SubStationArrivingFragment extends Fragment {
+public class SubStationDepartedFragment extends Fragment {
 
     private RecyclerView Recyclerview;
     private DatabaseReference mDatabaseRef;
@@ -63,10 +68,9 @@ public class SubStationArrivingFragment extends Fragment {
     public String Origin;
     private String dayOfWeek;
     private String MyStation;
-    Button btnDash;
 
-    public SubStationArrivingFragment() {
-
+    public SubStationDepartedFragment() {
+        // Required empty public constructor
     }
 
 
@@ -74,11 +78,11 @@ public class SubStationArrivingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_sub_station_arriving, container, false);
+        view = inflater.inflate(R.layout.fragment_sub_station_departed, container, false);
 
         firebaseAuth = FirebaseAuth.getInstance();
         linearLayoutManager = new LinearLayoutManager(getContext());
-        Recyclerview = view.findViewById(R.id.recyclerArrivingSubStationAdmin);
+        Recyclerview = view.findViewById(R.id.recyclerDepartedSubStaionAdmin);
 
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
@@ -100,49 +104,31 @@ public class SubStationArrivingFragment extends Fragment {
                 dayOfWeek = "Tuesday";
                 break;
             case Calendar.WEDNESDAY:
-
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference();
                 childRef = mDatabaseRef.child("VesselSchedule").child(String.valueOf("Wednesday")).child("Departed");
                 dayOfWeek = "Wednesday";
-
                 break;
             case Calendar.THURSDAY:
-
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference();
                 childRef = mDatabaseRef.child("VesselSchedule").child(String.valueOf("Thursday")).child("Departed");
                 dayOfWeek = "Thursday";
-
                 break;
             case Calendar.FRIDAY:
-
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference();
                 childRef = mDatabaseRef.child("VesselSchedule").child(String.valueOf("Friday")).child("Departed");
                 dayOfWeek = "Friday";
-
                 break;
             case Calendar.SATURDAY:
-
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference();
                 childRef = mDatabaseRef.child("VesselSchedule").child(String.valueOf("Saturday")).child("Departed");
                 dayOfWeek = "Saturday";
-
                 break;
         }
 
         Recyclerview.setLayoutManager(linearLayoutManager);
 
-        btnDash = view.findViewById(R.id.SubStationviewdash);
-
-        btnDash.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), SubStationDashBoardActivity.class));
-            }
-        });
-
         return view;
     }
-
 
     @Override
     public void onStart() {
@@ -166,11 +152,12 @@ public class SubStationArrivingFragment extends Fragment {
                                     DataVesselSched.class,
                                     R.layout.departed_listrow,
                                     DepartedViewHolder.class,
-                                    childRef.orderByChild("DestinationSubStation").equalTo(Origin)
+                                    childRef.orderByChild("OriginSubStation").equalTo(Origin)
 
                             ) {
                                 @Override
                                 protected void populateViewHolder(final DepartedViewHolder viewHolder, final DataVesselSched model, int position) {
+
                                     viewHolder.vesseltype.setText(model.getVesselType());
                                     viewHolder.vesselname.setText(model.getVesselName());
                                     viewHolder.vesselorigin.setText(model.getOrigin());
@@ -180,10 +167,11 @@ public class SubStationArrivingFragment extends Fragment {
                                     viewHolder.vesselschedday.setText(model.getScheduleDay());
                                     viewHolder.ATD.setText(model.getActualDepartedTime());
 
-                                    if (model.getDistressStatus().equals("Distress")){
+
+                                    if (model.getDistressStatus().equals("Distress")) {
                                         viewHolder.distressnotifieradmin.setVisibility(View.VISIBLE);
                                         viewHolder.distressnotifieradmin.setTextColor(Color.RED);
-                                    }else {
+                                    } else {
                                         viewHolder.distressnotifieradmin.setVisibility(View.GONE);
                                     }
 
@@ -191,21 +179,20 @@ public class SubStationArrivingFragment extends Fragment {
                                     final Handler handler = new Handler();
                                     final int delay = 1000; //milliseconds
 
-                                    handler.postDelayed(new Runnable(){
-                                        public void run(){
+                                    handler.postDelayed(new Runnable() {
+                                        public void run() {
 
-                                            if (viewHolder.distressnotifieradmin.getVisibility() == View.VISIBLE){
-                                                if (model.getDistressStatus().equals("Distress")){
+                                            if (viewHolder.distressnotifieradmin.getVisibility() == View.VISIBLE) {
+                                                if (model.getDistressStatus().equals("Distress")) {
                                                     if (viewHolder.distressnotifieradmin.getCurrentTextColor() == Color.RED) {
                                                         viewHolder.distressnotifieradmin.setTextColor(Color.BLACK);
                                                         viewHolder.vesselname.setTextColor(Color.BLACK);
-                                                    }else {
+                                                    } else {
                                                         viewHolder.distressnotifieradmin.setTextColor(Color.RED);
                                                         viewHolder.vesselname.setTextColor(Color.RED);
                                                     }
                                                 }
                                             }
-
                                             //do something
                                             SimpleDateFormat format = new SimpleDateFormat("h:mm a");
                                             DateFormat df = new SimpleDateFormat("h:mm a");
@@ -213,23 +200,68 @@ public class SubStationArrivingFragment extends Fragment {
                                             String actualTime = viewHolder.ATD.getText().toString();
                                             Date time1;
                                             Date time2;
+                                            String getETA = (model.getArrivalTime().toString());
+                                            Date time3;
+
 
                                             try {
-                                                time2 = format.parse(date);
                                                 time1 = format.parse(actualTime);
+                                                time2 = format.parse(date);
+                                                time3 = format.parse(getETA);
 
-                                                long diff = time2.getTime() - time1.getTime()  ;
+                                                long diff = time2.getTime() - time1.getTime();
                                                 long secondsInMilli = 1000;
                                                 long minutesInMilli = secondsInMilli * 60;
                                                 long hoursInMilli = minutesInMilli * 60;
-
                                                 long elapsedHours = diff / hoursInMilli;
                                                 diff = diff % hoursInMilli;
-
                                                 long elapsedMinutes = diff / minutesInMilli;
 
-                                                viewHolder.vesselhourstravelled.setText(elapsedHours+ " Hr(s) : "+ elapsedMinutes+" Min(s)");
+                                                viewHolder.vesselhourstravelled.setText(elapsedHours + " Hr(s) : " + elapsedMinutes + " Min(s)");
 
+                                                long ONE_MINUTE_IN_MILLIS = 60000;
+
+                                                long arrivaltime = time3.getTime();
+                                                long currenttime = time2.getTime();
+
+                                                Date afterAdding30Mins = new Date(arrivaltime + (30 * ONE_MINUTE_IN_MILLIS));
+
+                                                Date afterAdding1Hour = new Date(arrivaltime + (60 * ONE_MINUTE_IN_MILLIS));
+
+
+                                                if (afterAdding30Mins.equals(currenttime)) {
+                                                    NotificationCompat.Builder mBuilder =
+                                                            new NotificationCompat.Builder(getContext());
+
+                                                    mBuilder.setSmallIcon(R.drawable.logo_pcg);
+                                                    mBuilder.setContentTitle("You've receive a notification");
+                                                    mBuilder.setContentText("Vessel " + model.getVesselName() + " is late for already 30 minutes.");
+                                                    mBuilder.setPriority(Notification.PRIORITY_MAX);
+
+                                                    long[] vibrate = {0, 100, 200, 300};
+                                                    Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                                                    mBuilder.setSound(alarmSound);
+                                                    mBuilder.setVibrate(vibrate);
+                                                    NotificationManager mNotificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+
+                                                    mNotificationManager.notify(001, mBuilder.build());
+                                                } else if (afterAdding1Hour.equals(currenttime)) {
+                                                    NotificationCompat.Builder mBuilder =
+                                                            new NotificationCompat.Builder(getContext());
+
+                                                    mBuilder.setSmallIcon(R.drawable.logo_pcg);
+                                                    mBuilder.setContentTitle("You've receive a notification");
+                                                    mBuilder.setContentText("Vessel " + model.getVesselName() + " is late for already 1 hour.");
+                                                    mBuilder.setPriority(Notification.PRIORITY_MAX);
+
+                                                    long[] vibrate = {0, 100, 200, 300};
+                                                    Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                                                    mBuilder.setSound(alarmSound);
+                                                    mBuilder.setVibrate(vibrate);
+                                                    NotificationManager mNotificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+
+                                                    mNotificationManager.notify(001, mBuilder.build());
+                                                }
 
                                             } catch (ParseException e) {
                                                 e.printStackTrace();
@@ -237,7 +269,6 @@ public class SubStationArrivingFragment extends Fragment {
                                             handler.postDelayed(this, delay);
                                         }
                                     }, delay);
-
 
 
                                     viewHolder.btnDistress.setOnClickListener(new View.OnClickListener() {
@@ -265,7 +296,7 @@ public class SubStationArrivingFragment extends Fragment {
                                                             "CAPSIZING/ SUBMERGED",
                                                             "COLLISION",
                                                             "ALLISION/HITING/RAMMED",
-                                                            "MAN OVERBOARD"	,
+                                                            "MAN OVERBOARD",
                                                             "FIRE ONBOARD",
                                                             "DEATH ONBOARD",
                                                             "STEERING CASUALTY",
@@ -301,9 +332,9 @@ public class SubStationArrivingFragment extends Fragment {
 
                                                     if (TextUtils.isEmpty(getDistressDescription) ||
                                                             TextUtils.isEmpty(getDistressType) ||
-                                                            TextUtils.isEmpty(getDistressRemarks)){
+                                                            TextUtils.isEmpty(getDistressRemarks)) {
                                                         Toast.makeText(getContext(), "Please, Don't leave any field blank.", Toast.LENGTH_SHORT).show();
-                                                    }else {
+                                                    } else {
 
                                                         DateFormat df = new SimpleDateFormat("yyyy/MM/dd h:mm a");
                                                         final String date = df.format(Calendar.getInstance().getTime());
@@ -319,7 +350,7 @@ public class SubStationArrivingFragment extends Fragment {
                                                         HashString1.put("Key", key);
                                                         HashString1.put("OriginStation", model.getOriginStation());
                                                         HashString1.put("DestinationStation", model.getDestinationStation());
-                                                        HashString1.put("NotifDate",date);
+                                                        HashString1.put("NotifDate", date);
                                                         HashString1.put("NotifStatus", "unread");
                                                         HashString1.put("VesselName", model.getVesselName());
 
@@ -327,28 +358,28 @@ public class SubStationArrivingFragment extends Fragment {
                                                                 .setValue(HashString1).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
-                                                                if(task.isSuccessful()){
+                                                                if (task.isSuccessful()) {
                                                                     FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-                                                                    userID =  currentUser.getUid();
+                                                                    userID = currentUser.getUid();
 
                                                                     DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference();
 
                                                                     databaseReference1.child("Users").child(userID).addValueEventListener(new ValueEventListener() {
                                                                         @Override
                                                                         public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                            if (dataSnapshot.exists()){
+                                                                            if (dataSnapshot.exists()) {
                                                                                 Origin = dataSnapshot.child("SubStation").getValue().toString();
                                                                                 MyStation = dataSnapshot.child("MyStation").getValue().toString();
 
 
-                                                                                if (MyStation.equals(model.getDestinationStation()) && MyStation.equals(model.getOriginStation())){
+                                                                                if (MyStation.equals(model.getDestinationStation()) && MyStation.equals(model.getOriginStation())) {
                                                                                     DatabaseReference datanotifAdmin = FirebaseDatabase.getInstance().getReference("AdminNotifHeader");
 
                                                                                     datanotifAdmin.child(key)
                                                                                             .setValue(HashString1).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                         @Override
                                                                                         public void onComplete(@NonNull Task<Void> task) {
-                                                                                            if (task.isSuccessful()){
+                                                                                            if (task.isSuccessful()) {
 
                                                                                                 DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference("VesselsDashBoardAdmin");
 
@@ -382,7 +413,7 @@ public class SubStationArrivingFragment extends Fragment {
                                                                                         }
                                                                                     });
 
-                                                                                }else if (MyStation.equals(model.getDestinationStation())){
+                                                                                } else if (MyStation.equals(model.getDestinationStation())) {
                                                                                     DatabaseReference datanotiforigin = FirebaseDatabase.getInstance().getReference("StationNotifHeader");
 
                                                                                     datanotiforigin.child(model.getOriginStation())
@@ -390,14 +421,14 @@ public class SubStationArrivingFragment extends Fragment {
                                                                                             .setValue(HashString1).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                         @Override
                                                                                         public void onComplete(@NonNull Task<Void> task) {
-                                                                                            if (task.isSuccessful()){
+                                                                                            if (task.isSuccessful()) {
                                                                                                 DatabaseReference datanotiforigin = FirebaseDatabase.getInstance().getReference("MyStationNotifHeader");
 
                                                                                                 datanotiforigin.child(model.getOriginStation())
                                                                                                         .child(key)
                                                                                                         .setValue(HashString1);
 
-                                                                                                DatabaseReference  dataNotifSubStat = FirebaseDatabase.getInstance().getReference("MySubStationNotifHeader");
+                                                                                                DatabaseReference dataNotifSubStat = FirebaseDatabase.getInstance().getReference("MySubStationNotifHeader");
 
                                                                                                 dataNotifSubStat.child(model.getOriginSubStation())
                                                                                                         .child(key)
@@ -431,7 +462,7 @@ public class SubStationArrivingFragment extends Fragment {
                                                                                                         .setValue(HashString1).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                                     @Override
                                                                                                     public void onComplete(@NonNull Task<Void> task) {
-                                                                                                        if (task.isSuccessful()){
+                                                                                                        if (task.isSuccessful()) {
 
                                                                                                             Snackbar snackbar = Snackbar
                                                                                                                     .make(getActivity().findViewById(R.id.myFramez), "Distress Sent.", Snackbar.LENGTH_LONG)
@@ -452,7 +483,7 @@ public class SubStationArrivingFragment extends Fragment {
                                                                                             }
                                                                                         }
                                                                                     });
-                                                                                }else {
+                                                                                } else {
                                                                                     DatabaseReference datanotifdestination = FirebaseDatabase.getInstance().getReference("StationNotifHeader");
 
                                                                                     datanotifdestination.child(model.getDestinationStation())
@@ -460,7 +491,7 @@ public class SubStationArrivingFragment extends Fragment {
                                                                                             .setValue(HashString1).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                         @Override
                                                                                         public void onComplete(@NonNull Task<Void> task) {
-                                                                                            if (task.isSuccessful()){
+                                                                                            if (task.isSuccessful()) {
 
                                                                                                 DatabaseReference datanotiforigin = FirebaseDatabase.getInstance().getReference("MyStationNotifHeader");
 
@@ -476,7 +507,7 @@ public class SubStationArrivingFragment extends Fragment {
                                                                                                         .child("DistressStatus")
                                                                                                         .setValue("Distress");
 
-                                                                                                DatabaseReference  dataNotifSubStat = FirebaseDatabase.getInstance().getReference("MySubStationNotifHeader");
+                                                                                                DatabaseReference dataNotifSubStat = FirebaseDatabase.getInstance().getReference("MySubStationNotifHeader");
 
                                                                                                 dataNotifSubStat.child(model.getOriginSubStation())
                                                                                                         .child(key)
@@ -487,7 +518,6 @@ public class SubStationArrivingFragment extends Fragment {
                                                                                                 dataNotifOtherSubStat.child(model.getOriginSubStation())
                                                                                                         .child(key)
                                                                                                         .setValue(HashString1);
-
 
 
                                                                                                 DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference("VesselsDashBoardAdmin");
@@ -502,7 +532,7 @@ public class SubStationArrivingFragment extends Fragment {
                                                                                                         .setValue(HashString1).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                                     @Override
                                                                                                     public void onComplete(@NonNull Task<Void> task) {
-                                                                                                        if (task.isSuccessful()){
+                                                                                                        if (task.isSuccessful()) {
                                                                                                             Snackbar snackbar = Snackbar
                                                                                                                     .make(getActivity().findViewById(R.id.myFramez), "Distress Sent.", Snackbar.LENGTH_LONG)
                                                                                                                     .setAction("Review", new View.OnClickListener() {
@@ -548,8 +578,6 @@ public class SubStationArrivingFragment extends Fragment {
                                             dialog.show();
                                         }
                                     });
-
-
 
 
                                     viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -647,7 +675,8 @@ public class SubStationArrivingFragment extends Fragment {
                                                     .child("Arrived")
                                                     .child(model.getKey());
 
-                                            moveFirebaseRecord1(From ,To);
+                                            moveFirebaseRecord1(From, To);
+
                                             //Move Query
 
                                         }
@@ -659,16 +688,16 @@ public class SubStationArrivingFragment extends Fragment {
                                     mUserDatabase.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
-                                            if (dataSnapshot.exists()){
+                                            if (dataSnapshot.exists()) {
                                                 final String image = dataSnapshot.child("image").getValue().toString();
 
-                                                if (!image.equals("default")){
+                                                if (!image.equals("default")) {
                                                     Picasso.with(getContext())
                                                             .load(image)
                                                             .fit().centerCrop()
                                                             .networkPolicy(NetworkPolicy.OFFLINE)
                                                             .placeholder(R.drawable.zz)
-                                                            .into(viewHolder.imagevessel , new Callback() {
+                                                            .into(viewHolder.imagevessel, new Callback() {
                                                                 @Override
                                                                 public void onSuccess() {
 
@@ -705,7 +734,6 @@ public class SubStationArrivingFragment extends Fragment {
         });
     }
 
-
     public void moveFirebaseRecord1(final DatabaseReference fromPath, final DatabaseReference toPath) {
         fromPath.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -731,5 +759,6 @@ public class SubStationArrivingFragment extends Fragment {
             }
         });
     }
+
 
 }

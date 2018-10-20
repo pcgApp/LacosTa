@@ -68,31 +68,31 @@ public class SubStationArrivedFragment extends Fragment {
         switch (day) {
             case Calendar.SUNDAY:
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-                childRef = mDatabaseRef.child("VesselSchedule").child("Sunday").child("Departed");
+                childRef = mDatabaseRef.child("VesselSchedule").child("Sunday").child("Arrived");
                 break;
             case Calendar.MONDAY:
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-                childRef = mDatabaseRef.child("VesselSchedule").child(String.valueOf("Monday")).child("Departed");
+                childRef = mDatabaseRef.child("VesselSchedule").child(String.valueOf("Monday")).child("Arrived");
                 break;
             case Calendar.TUESDAY:
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-                childRef = mDatabaseRef.child("VesselSchedule").child(String.valueOf("Tuesday")).child("Departed");
+                childRef = mDatabaseRef.child("VesselSchedule").child(String.valueOf("Tuesday")).child("Arrived");
                 break;
             case Calendar.WEDNESDAY:
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-                childRef = mDatabaseRef.child("VesselSchedule").child(String.valueOf("Wednesday")).child("Departed");
+                childRef = mDatabaseRef.child("VesselSchedule").child(String.valueOf("Wednesday")).child("Arrived");
                 break;
             case Calendar.THURSDAY:
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-                childRef = mDatabaseRef.child("VesselSchedule").child(String.valueOf("Thursday")).child("Departed");
+                childRef = mDatabaseRef.child("VesselSchedule").child(String.valueOf("Thursday")).child("Arrived");
                 break;
             case Calendar.FRIDAY:
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-                childRef = mDatabaseRef.child("VesselSchedule").child(String.valueOf("Friday")).child("Departed");
+                childRef = mDatabaseRef.child("VesselSchedule").child(String.valueOf("Friday")).child("Arrived");
                 break;
             case Calendar.SATURDAY:
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-                childRef = mDatabaseRef.child("VesselSchedule").child(String.valueOf("Saturday")).child("Departed");
+                childRef = mDatabaseRef.child("VesselSchedule").child(String.valueOf("Saturday")).child("Arrived");
                 break;
         }
 

@@ -70,7 +70,7 @@ public class StationArrivingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         view = inflater.inflate(R.layout.fragment_station_arriving, container, false);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -569,6 +569,31 @@ public class StationArrivingFragment extends Fragment {
                                                         .child(model.getKey())
                                                         .child("ActualTimeArrived");
                                                 databaseReference5.setValue(date);
+
+                                                DatabaseReference setArrivedDashboard = FirebaseDatabase.getInstance()
+                                                        .getReference("VesselsDashBoardAdmin")
+                                                        .child(model.getScheduleDay())
+                                                        .child(model.getKey())
+                                                        .child("VesselStatus");
+                                                setArrivedDashboard.setValue("Arrived");
+
+                                                DatabaseReference setDistressStatus = FirebaseDatabase.getInstance()
+                                                        .getReference("VesselsDashBoardAdmin")
+                                                        .child(model.getScheduleDay())
+                                                        .child(model.getKey())
+                                                        .child("DistressStatus");
+                                                setDistressStatus.setValue("None");
+
+                                                DatabaseReference changeDistressStatus = FirebaseDatabase.getInstance()
+                                                        .getReference("VesselSchedule")
+                                                        .child(model.getScheduleDay())
+                                                        .child("Departed")
+                                                        .child(model.getKey())
+                                                        .child("DistressStatus");
+
+                                                changeDistressStatus.setValue("None");
+
+
                                                 //Schedule
                                                 //Move Query
                                                 DatabaseReference From = FirebaseDatabase.getInstance()

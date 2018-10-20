@@ -51,6 +51,8 @@ public class SubStationSchedMonitoring extends Fragment {
     }
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        adapter.addFragment(new SubStationPendingFragment(), "SCHEDULE");
+        adapter.addFragment(new SubStationDepartedFragment(), "DEPARTED");
         adapter.addFragment(new SubStationArrivingFragment(), "ARRIVING");
         adapter.addFragment(new SubStationArrivedFragment(), "ARRIVED");
         viewPager.setAdapter(adapter);

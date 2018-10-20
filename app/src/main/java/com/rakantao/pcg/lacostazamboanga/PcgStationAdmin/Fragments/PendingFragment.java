@@ -254,77 +254,77 @@ public class PendingFragment extends Fragment {
                                             @Override
                                             public void onClick(View view) {
 
-                                                DatabaseReference databaseReference000 = FirebaseDatabase.getInstance().getReference();
+                                                DatabaseReference checkReport = FirebaseDatabase.getInstance().getReference();
 
-                                                databaseReference000.child("AdminImagesReport").child(model.getVesselName()).addValueEventListener(new ValueEventListener() {
+                                                checkReport.child("AdminImagesReport").child(model.getVesselName()).addValueEventListener(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                                         if (dataSnapshot.exists()){
 
 
-                                                            DatabaseReference databaseReference9 = FirebaseDatabase.getInstance().getReference();
+                                                            DatabaseReference fetchdatas = FirebaseDatabase.getInstance().getReference();
 
-                                                            databaseReference9.child("AdminImagesReport").child(model.getVesselName()).addValueEventListener(new ValueEventListener() {
+                                                            fetchdatas.child("AdminImagesReport").child(model.getVesselName()).addValueEventListener(new ValueEventListener() {
                                                                 @Override
                                                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                                                     if (dataSnapshot.exists()){
                                                                         DateFormat df = new SimpleDateFormat("h:mm a");
                                                                         String date = df.format(Calendar.getInstance().getTime());
 
-                                                                        DatabaseReference databaseReferencez;
+                                                                        DatabaseReference SaveDeparted;
 
-                                                                        databaseReferencez = FirebaseDatabase.getInstance()
+                                                                        SaveDeparted = FirebaseDatabase.getInstance()
                                                                                 .getReference("VesselDetails")
                                                                                 .child(model.getVesselName())
                                                                                 .child("VesselStatus");
-                                                                        databaseReferencez.setValue("Departed");
+                                                                        SaveDeparted.setValue("Departed");
 
-                                                                        DatabaseReference databaseReferencez1 = FirebaseDatabase.getInstance()
+                                                                        DatabaseReference saveActualTime = FirebaseDatabase.getInstance()
                                                                                 .getReference("VesselDetails")
                                                                                 .child((String) viewHolder.vesselname.getText())
                                                                                 .child("ActualDepartedTime");
-                                                                        databaseReferencez1.setValue(date);
+                                                                        saveActualTime.setValue(date);
 
 
-                                                                        DatabaseReference databaseReferencez2 = FirebaseDatabase.getInstance()
+                                                                        DatabaseReference saveAnotherDeparted = FirebaseDatabase.getInstance()
                                                                                 .getReference("VesselSchedule")
                                                                                 .child(model.getScheduleDay())
                                                                                 .child("Pending")
                                                                                 .child(model.getKey())
                                                                                 .child("VesselStatus");
-                                                                        databaseReferencez2.setValue("Departed");
+                                                                        saveAnotherDeparted.setValue("Departed");
 
-                                                                        DatabaseReference databaseReferencez3 = FirebaseDatabase.getInstance()
+                                                                        DatabaseReference SaveAnotherActualTime = FirebaseDatabase.getInstance()
                                                                                 .getReference("VesselSchedule")
                                                                                 .child(model.getScheduleDay())
                                                                                 .child("Pending")
                                                                                 .child(model.getKey())
                                                                                 .child("ActualDepartedTime");
-                                                                        databaseReferencez3.setValue(date);
+                                                                        SaveAnotherActualTime.setValue(date);
 
-                                                                        DatabaseReference databaseReferencez7 = FirebaseDatabase.getInstance()
+                                                                        DatabaseReference SaveintoDashBoard = FirebaseDatabase.getInstance()
                                                                                 .getReference("VesselsDashBoardAdmin")
                                                                                 .child(model.getScheduleDay())
                                                                                 .child(model.getKey())
                                                                                 .child("VesselStatus");
-                                                                        databaseReferencez7.setValue("Departed");
+                                                                        SaveintoDashBoard.setValue("Departed");
 
                                                                         //Move Queries
 
-                                                                        DatabaseReference databaseReferencez6 = FirebaseDatabase.getInstance()
+                                                                        DatabaseReference FromDB = FirebaseDatabase.getInstance()
                                                                                 .getReference("VesselSchedule")
                                                                                 .child(model.getScheduleDay())
                                                                                 .child("Pending")
                                                                                 .child(model.getKey());
 
-                                                                        DatabaseReference databaseReferencez4 = FirebaseDatabase.getInstance()
+                                                                        DatabaseReference ToDB = FirebaseDatabase.getInstance()
                                                                                 .getReference("VesselSchedule")
                                                                                 .child(model.getScheduleDay())
                                                                                 .child("Departed")
                                                                                 .child(model.getKey());
 
                                                                         //Move Queries
-                                                                        moveFirebaseRecord1(databaseReferencez6 ,databaseReferencez4);
+                                                                        moveFirebaseRecord1(FromDB ,ToDB);
                                                                     } else {
                                                                         Toast.makeText(getContext(), "Vessel is still on scheduled for Inspection", Toast.LENGTH_SHORT).show();
                                                                     }

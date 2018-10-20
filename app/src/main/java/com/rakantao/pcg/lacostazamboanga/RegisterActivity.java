@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.rakantao.pcg.lacostazamboanga.PCGAdmin.Activities.SetVesselScheduleActivity;
 
 import java.util.HashMap;
 
@@ -50,6 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
     private DatabaseReference databaseReference2;
     private FirebaseAuth mAuth;
     private ImageButton btnBack;
+    private Button btnSubStation,btnStation;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -74,6 +76,8 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister =  findViewById(R.id.btnRegister);
         mProgressBar =  findViewById(R.id.progressBarReg);
         rgGender =  findViewById(R.id.rgGender);
+        btnSubStation = findViewById(R.id.btnSelectSubStation);
+        btnStation = findViewById(R.id.btnSelectStation);
 
         selectGender();
         spinnerRank();
@@ -103,6 +107,65 @@ public class RegisterActivity extends AppCompatActivity {
                         })
                         .setNegativeButton("No", null)
                         .show();
+            }
+        });
+
+
+        btnStation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final CharSequence[] items2 = {
+                        "PCG Bohol","PCG Cebu"
+                };
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(RegisterActivity.this);
+                builder2.setTitle("Make your selection");
+                builder2.setItems(items2, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+                        // Do something with the selection
+                        btnStation.setText(items2[item]);
+                    }
+                });
+                AlertDialog alert2 = builder2.create();
+                alert2.show();
+            }
+        });
+
+        btnSubStation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String getStation = btnStation.getText().toString();
+
+                if (getStation.equals("PCG Bohol")){
+                    final CharSequence[] items2 = {
+                            "JAGNA","UBAY","TALIBON","TUBIGON","PANGLAO","LOAY","GETAFE","PRESIDENT CARLOS P GARCIA"
+                    };
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(RegisterActivity.this);
+                    builder2.setTitle("Make your selection");
+                    builder2.setItems(items2, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int item) {
+                            // Do something with the selection
+                            btnSubStation.setText(items2[item]);
+                        }
+                    });
+                    AlertDialog alert2 = builder2.create();
+                    alert2.show();
+                }else if (getStation.equals("PCG Cebu")){
+                    final CharSequence[] items2 = {
+                            "MANDAUE","HAGNAYA","NAGA","TOLEDO","CAMOTES","DANAO","BANTAYAN","ADUANA","TABUELAN","TINAGO","BATO","ARGAO","TANGIL"
+                    };
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(RegisterActivity.this);
+                    builder2.setTitle("Make your selection");
+                    builder2.setItems(items2, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int item) {
+                            // Do something with the selection
+                            btnSubStation.setText(items2[item]);
+                        }
+                    });
+                    AlertDialog alert2 = builder2.create();
+                    alert2.show();
+                }else {
+                    Toast.makeText(RegisterActivity.this, "Please Select a Station before selecting a Sub Station", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -153,6 +216,8 @@ public class RegisterActivity extends AppCompatActivity {
         final String address = etAdress.getText().toString().trim();
         final String email = etEmail.getText().toString().trim();
         final String password = etPassword.getText().toString().trim();
+        final String getStation = btnStation.getText().toString();
+        final String getSubStation = btnSubStation.getText().toString();
 
         if (TextUtils.isEmpty(lastname) ||
                 TextUtils.isEmpty(firstname) ||
@@ -171,51 +236,69 @@ public class RegisterActivity extends AppCompatActivity {
             mProgressBar.setVisibility(View.INVISIBLE);
             Toast.makeText(getApplicationContext(), "Select Gender", Toast.LENGTH_SHORT).show();
         } else {
-            mProgressBar.setVisibility(View.VISIBLE);
 
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            if (getStation.equals("Select Station")){
+                Toast.makeText(RegisterActivity.this, "You have either not selected station or sub-station you belong in.", Toast.LENGTH_SHORT).show();
+            }else if (getSubStation.equals("Select SubStation")){
+                Toast.makeText(RegisterActivity.this, "You have either not selected station or sub-station you belong in.", Toast.LENGTH_SHORT).show();
+            }else {
+                mProgressBar.setVisibility(View.VISIBLE);
 
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                FirebaseUser currentUser = mAuth.getCurrentUser();
-                                String user_id = currentUser.getUid();
-                                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
-                                HashMap<String, String> User = new HashMap<String, String>();
-                                User.put("FirstName", firstname);
-                                User.put("LastName", lastname);
-                                User.put("MiddleName", middlename);
-                                User.put("Address", address);
-                                User.put("Gender", mGender);
-                                User.put("Email", email);
-                                User.put("Password", password);
-                                User.put("Rank", rank);
-                                User.put("Usertype", "personnel");
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    FirebaseUser currentUser = mAuth.getCurrentUser();
+                                    String user_id = currentUser.getUid();
+                                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
-                                databaseReference = firebaseDatabase.getReference("Users").child(user_id);
-                                databaseReference.setValue(User);
+                                    HashMap<String, String> User = new HashMap<String, String>();
+                                    User.put("FirstName", firstname);
+                                    User.put("LastName", lastname);
+                                    User.put("MiddleName", middlename);
+                                    User.put("Address", address);
+                                    User.put("Gender", mGender);
+                                    User.put("Email", email);
+                                    User.put("Password", password);
+                                    User.put("Rank", rank);
+                                    User.put("Usertype", "personnel");
+                                    User.put("Station", getStation);
+                                    User.put("SubStation", getSubStation);
 
-                                //adding personnel table
-                                databaseReference2 = firebaseDatabase.getReference("Personnel").child(user_id);
-                                databaseReference2.setValue(User);
+                                    databaseReference = firebaseDatabase.getReference("Users").child(user_id);
+                                    databaseReference.setValue(User);
 
-                                Toast.makeText(RegisterActivity.this, "You've Successfully Registered", Toast.LENGTH_LONG).show();
-                                mProgressBar.setVisibility(View.INVISIBLE);
+                                    //adding personnel table
+                                    databaseReference2 = firebaseDatabase.getReference("Personnel").child(user_id);
+                                    databaseReference2.setValue(User);
 
-                                mAuth.signOut();
-                                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                            } else {
-                                mProgressBar.setVisibility(View.INVISIBLE);
-                                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                                Toast.makeText(RegisterActivity.this, "" + task.getException(), Toast.LENGTH_LONG).show();
+                                    DatabaseReference saveNewPersonnelTable = FirebaseDatabase.getInstance().getReference("NewPersonnelTable");
+
+                                    saveNewPersonnelTable
+                                            .child(getStation)
+                                            .child(getSubStation)
+                                            .child(user_id)
+                                            .setValue(User);
+
+                                    Toast.makeText(RegisterActivity.this, "You've Successfully Registered", Toast.LENGTH_LONG).show();
+                                    mProgressBar.setVisibility(View.INVISIBLE);
+
+                                    mAuth.signOut();
+                                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                                } else {
+                                    mProgressBar.setVisibility(View.INVISIBLE);
+                                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                                    Toast.makeText(RegisterActivity.this, "" + task.getException(), Toast.LENGTH_LONG).show();
+                                }
                             }
-                        }
-                    });
+                        });
+            }
+
         }
     }
     @Override

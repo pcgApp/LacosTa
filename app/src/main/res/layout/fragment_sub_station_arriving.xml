@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
+    android:orientation="vertical"
     android:id="@+id/myFramez"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PcgSubStationAdmin.Fragments.SubStationArrivingFragment">
+
+    <Button
+        android:id="@+id/SubStationviewdash"
+        android:textColor="@color/white"
+        android:textSize="17dp"
+        fontPath="fonts/RobotoCondensed-Regular.ttf"
+        android:layout_margin="10dp"
+        android:background="@drawable/btn_background_2"
+        android:text="View dashboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingPrefix" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerArrivingSubStationAdmin"
@@ -14,4 +27,4 @@
 
     </android.support.v7.widget.RecyclerView>
 
-</FrameLayout>
+</LinearLayout>

@@ -75,6 +75,7 @@ public class ViewDetailedVessels extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
+
         FirebaseRecyclerAdapter<DataImageReport, DetailedVesselViewHolder> firebaseRecyclerAdapter =
                 new FirebaseRecyclerAdapter<DataImageReport, DetailedVesselViewHolder>(
 
@@ -168,7 +169,6 @@ public class ViewDetailedVessels extends AppCompatActivity {
                                     Toast.makeText(ViewDetailedVessels.this, "No Reports have been made yet.", Toast.LENGTH_SHORT).show();
                                 }
                             }
-
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
 

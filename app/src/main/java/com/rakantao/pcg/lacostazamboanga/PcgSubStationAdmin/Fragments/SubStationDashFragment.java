@@ -1,4 +1,4 @@
-package com.rakantao.pcg.lacostazamboanga.PcgStationAdmin.Fragments;
+package com.rakantao.pcg.lacostazamboanga.PcgSubStationAdmin.Fragments;
 
 
 import android.graphics.Color;
@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,7 +35,10 @@ import java.util.Date;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class StationScheduleDashBoard extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class SubStationDashFragment extends Fragment {
 
     View view;
     RecyclerView depart;
@@ -49,16 +51,15 @@ public class StationScheduleDashBoard extends Fragment {
     public String Origin;
     private FirebaseAuth firebaseAuth;
 
-    public StationScheduleDashBoard() {
+    public SubStationDashFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_station_schedule_dash_board, container, false);
+        view = inflater.inflate(R.layout.fragment_sub_station_dash, container, false);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -68,8 +69,8 @@ public class StationScheduleDashBoard extends Fragment {
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager2.setReverseLayout(true);
 
-        depart = view.findViewById(R.id.recyclerStationDepart);
-        arrival = view.findViewById(R.id.recyclerStationArrivals);
+        depart = view.findViewById(R.id.recyclerSubStationDepart);
+        arrival = view.findViewById(R.id.recyclerSubStationArrivals);
 
 
         Calendar calendar = Calendar.getInstance();
@@ -121,14 +122,15 @@ public class StationScheduleDashBoard extends Fragment {
         }
 
         depart.setLayoutManager(linearLayoutManager);
-        arrival.setLayoutManager(linearLayoutManager2);
 
+        arrival.setLayoutManager(linearLayoutManager2);
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
+
 
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         userID =  currentUser.getUid();
@@ -140,7 +142,7 @@ public class StationScheduleDashBoard extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
 
-                    Origin = dataSnapshot.child("Station").getValue().toString();
+                    Origin = dataSnapshot.child("SubStation").getValue().toString();
 
                     FirebaseRecyclerAdapter<DataVesselSched, StationDeparturesViewHolder> firebaseRecyclerAdapter =
                             new FirebaseRecyclerAdapter<DataVesselSched, StationDeparturesViewHolder>(
@@ -148,7 +150,7 @@ public class StationScheduleDashBoard extends Fragment {
                                     DataVesselSched.class,
                                     R.layout.station_schedule_dashboard_listrow,
                                     StationDeparturesViewHolder.class,
-                                    childRef.orderByChild("OriginStation").equalTo(Origin)
+                                    childRef.orderByChild("OriginSubStation").equalTo(Origin)
 
                             ) {
                                 @Override
@@ -182,7 +184,6 @@ public class StationScheduleDashBoard extends Fragment {
 
                                     handler.postDelayed(new Runnable(){
                                         public void run(){
-
                                             if (viewHolder.tvRemarks.getText().toString().equals("Departed")){
                                                 SimpleDateFormat format = new SimpleDateFormat("h:mm a");
                                                 DateFormat df = new SimpleDateFormat("h:mm a");
@@ -256,6 +257,7 @@ public class StationScheduleDashBoard extends Fragment {
                                                 handler.removeCallbacks(this);
                                             }
 
+
                                         }
                                     }, delay);
 
@@ -270,11 +272,11 @@ public class StationScheduleDashBoard extends Fragment {
                                     DataVesselSched.class,
                                     R.layout.station_arrival_dashboard_listrow,
                                     StationArrivalsViewHolder.class,
-                                    childRef2.orderByChild("DestinationStation").equalTo(Origin)
-
+                                    childRef.orderByChild("DestinationSubStation").equalTo(Origin)
                             ) {
                                 @Override
                                 protected void populateViewHolder(final StationArrivalsViewHolder viewHolder, final DataVesselSched model, int position) {
+
 
                                     viewHolder.tvdes.setText(model.getDestination());
                                     viewHolder.tvTime.setText(model.getArrivalTime());
@@ -379,14 +381,11 @@ public class StationScheduleDashBoard extends Fragment {
                                                 handler.removeCallbacks(this);
                                             }
 
-
                                         }
                                     }, delay);
                                 }
                             };
                     arrival.setAdapter(firebaseRecyclerAdapter2);
-
-
                 }
             }
 
@@ -395,7 +394,5 @@ public class StationScheduleDashBoard extends Fragment {
 
             }
         });
-
-
     }
 }

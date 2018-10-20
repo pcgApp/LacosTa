@@ -29,7 +29,7 @@
         android:name=".Application"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/qqqz"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -99,7 +99,9 @@
             android:value="0a61a7ff3e0bcd5a1fa55bbddab5c3bb54887ebf" />
 
         <activity android:name=".PCGAdmin.FirebaseQueryActivity" />
-        <activity android:name=".RegisterSubStation"></activity>
+        <activity android:name=".RegisterSubStation" />
+        <activity android:name=".PcgSubStationAdmin.Activities.SubStationDashBoardActivity"
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>

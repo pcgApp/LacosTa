@@ -466,6 +466,7 @@ public class SetVesselScheduleActivity extends AppCompatActivity implements View
                                 "PANGLAO",
                                 "LOAY",
                                 "GETAFE",
+                                "TAGBILARAN",
                                 "PRESIDENT CARLOS P GARCIA"
                         };
                         AlertDialog.Builder builder2 = new AlertDialog.Builder(SetVesselScheduleActivity.this);
@@ -511,6 +512,7 @@ public class SetVesselScheduleActivity extends AppCompatActivity implements View
                                 "PANGLAO",
                                 "LOAY",
                                 "GETAFE",
+                                "TAGBILARAN",
                                 "PRESIDENT CARLOS P GARCIA"
                         };
                         AlertDialog.Builder builder2 = new AlertDialog.Builder(SetVesselScheduleActivity.this);
@@ -654,6 +656,7 @@ public class SetVesselScheduleActivity extends AppCompatActivity implements View
                                     || getOrigin.equals("PANGLAO")
                                     || getOrigin.equals("LOAY")
                                     || getOrigin.equals("GETAFE")
+                                    || getOrigin.equals("TAGBILARAN")
                                     || getOrigin.equals("PRESIDENT CARLOS P GARCIA"))){
 
                                 originStation = "CGS BOHOL";
@@ -682,6 +685,7 @@ public class SetVesselScheduleActivity extends AppCompatActivity implements View
                                     || getDestination.equals("PANGLAO")
                                     || getDestination.equals("LOAY")
                                     || getDestination.equals("GETAFE")
+                                    || getOrigin.equals("TAGBILARAN")
                                     || getDestination.equals("PRESIDENT CARLOS P GARCIA")) {
 
                                 destinationStation = "CGS BOHOL";
@@ -725,6 +729,7 @@ public class SetVesselScheduleActivity extends AppCompatActivity implements View
                             HashString1.put("DistressStatus", "None");
                             HashString1.put("DestinationSubStation", "CGSS "+getDestination);
                             HashString1.put("OriginSubStation", "CGSS "+getOrigin);
+                            HashString1.put("LateIndicator", "Not Late");
 
                             DatabaseReference databaseReference1 = firebaseDatabase1.getReference("VesselDetails").child(VesselName);
                             databaseReference1.setValue(HashString1);

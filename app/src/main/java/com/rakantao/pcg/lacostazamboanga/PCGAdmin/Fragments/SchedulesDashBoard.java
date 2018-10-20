@@ -19,7 +19,11 @@ import com.rakantao.pcg.lacostazamboanga.PCGAdmin.ViewHolders.ArrivalDashBoardVi
 import com.rakantao.pcg.lacostazamboanga.PCGAdmin.ViewHolders.DeparturesDashBoardViewHolder;
 import com.rakantao.pcg.lacostazamboanga.R;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class SchedulesDashBoard extends Fragment {
 
@@ -119,6 +123,12 @@ public class SchedulesDashBoard extends Fragment {
                         viewHolder.tvvesNme.setText(model.getVesselName());
                         viewHolder.tvRemarks.setText(model.getVesselStatus());
 
+                        if (model.getVesselStatus().equals("Pending")){
+                            viewHolder.cardViewAdmin.setVisibility(View.GONE);
+                        }else {
+                            viewHolder.cardViewAdmin.setVisibility(View.VISIBLE);
+                        }
+
 
                         if (model.getDistressStatus().equals("Distress")){
                             viewHolder.tvRemarks.setText(model.getDistressStatus());
@@ -131,25 +141,74 @@ public class SchedulesDashBoard extends Fragment {
 
                         handler.postDelayed(new Runnable(){
                             public void run(){
-                                if (model.getDistressStatus().equals("Distress")){
-                                    if (viewHolder.tvdes.getCurrentTextColor() == Color.WHITE){
+
+                                if (viewHolder.tvRemarks.getText().toString().equals("Departed")){
+                                    SimpleDateFormat format = new SimpleDateFormat("h:mm a");
+                                    DateFormat df = new SimpleDateFormat("h:mm a");
+                                    String date = df.format(Calendar.getInstance().getTime());
+                                    Date time1;
+                                    Date time2;
+                                    String getETA = (model.getArrivalTime().toString());
+
+
+                                    try {
+                                        time1 = format.parse(date);
+                                        time2 = format.parse(getETA);
+
+
+                                        long arrivaltime = time2.getTime();
+                                        long currenttime = time1.getTime();
+
+
+
+                                        if (currenttime > arrivaltime) {
+
+                                            if (viewHolder.tvdes.getCurrentTextColor() == Color.WHITE) {
+
+                                                viewHolder.tvdes.setTextColor(Color.BLUE);
+                                                viewHolder.tvTime.setTextColor(Color.BLUE);
+                                                viewHolder.tvvesNme.setTextColor(Color.BLUE);
+                                                viewHolder.tvorigin.setTextColor(Color.BLUE);
+                                                viewHolder.tvRemarks.setTextColor(Color.BLUE);
+
+                                            }else {
+                                                viewHolder.tvdes.setTextColor(Color.WHITE);
+                                                viewHolder.tvTime.setTextColor(Color.WHITE);
+                                                viewHolder.tvvesNme.setTextColor(Color.WHITE);
+                                                viewHolder.tvorigin.setTextColor(Color.WHITE);
+                                                viewHolder.tvRemarks.setTextColor(Color.WHITE);
+                                            }
+                                        }
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    handler.postDelayed(this, delay);
+                                }else if (viewHolder.tvRemarks.getText().toString().equals("Distress")) {
+                                    if (viewHolder.tvdes.getCurrentTextColor() == Color.WHITE) {
 
                                         viewHolder.tvdes.setTextColor(Color.RED);
-                                        viewHolder.tvorigin.setTextColor(Color.RED);
                                         viewHolder.tvTime.setTextColor(Color.RED);
                                         viewHolder.tvvesNme.setTextColor(Color.RED);
+                                        viewHolder.tvorigin.setTextColor(Color.RED);
                                         viewHolder.tvRemarks.setTextColor(Color.RED);
 
-                                    }else {
+                                    } else {
 
                                         viewHolder.tvdes.setTextColor(Color.WHITE);
-                                        viewHolder.tvorigin.setTextColor(Color.WHITE);
                                         viewHolder.tvTime.setTextColor(Color.WHITE);
                                         viewHolder.tvvesNme.setTextColor(Color.WHITE);
+                                        viewHolder.tvorigin.setTextColor(Color.WHITE);
                                         viewHolder.tvRemarks.setTextColor(Color.WHITE);
+
                                     }
-                                    }
-                                handler.postDelayed(this, delay);
+
+                                    handler.postDelayed(this, delay);
+                                }else {
+                                    handler.removeCallbacks(this);
+                                }
+
+
                             }
                         }, delay);
 
