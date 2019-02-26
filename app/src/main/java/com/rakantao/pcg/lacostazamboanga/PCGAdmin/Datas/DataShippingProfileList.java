@@ -6,16 +6,38 @@ public class DataShippingProfileList {
     private String VesselType;
     private String Origin;
     private String Destination;
+    private String VesselPassengerCapacity;
+    private String VesselNumberOfCrew;
 
     public DataShippingProfileList(){
 
     }
 
-    public DataShippingProfileList(String VesselName, String Vesseltype, String Origin, String Destination) {
+    public DataShippingProfileList(String VesselName, String Vesseltype, String Origin, String Destination,
+                                   String VesselPassengerCapacity, String VesselNumberOfCrew) {
         this.VesselName = VesselName;
         this.VesselType = Vesseltype;
         this.Origin = Origin;
         this.Destination = Destination;
+        this.VesselPassengerCapacity = VesselPassengerCapacity;
+        this.VesselNumberOfCrew = VesselNumberOfCrew;
+
+    }
+
+    public String getVesselPassengerCapacity() {
+        return VesselPassengerCapacity;
+    }
+
+    public void setVesselPassengerCapacity(String vesselPassengerCapacity) {
+        VesselPassengerCapacity = vesselPassengerCapacity;
+    }
+
+    public String getVesselNumberOfCrew() {
+        return VesselNumberOfCrew;
+    }
+
+    public void setVesselNumberOfCrew(String vesselNumberOfCrew) {
+        VesselNumberOfCrew = vesselNumberOfCrew;
     }
 
     public String getVesselName() {

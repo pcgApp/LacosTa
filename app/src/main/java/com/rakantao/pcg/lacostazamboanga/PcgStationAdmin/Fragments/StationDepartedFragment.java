@@ -166,6 +166,46 @@ public class StationDepartedFragment extends Fragment {
                                         viewHolder.vesselschedday.setText(model.getScheduleDay());
                                         viewHolder.ATD.setText(model.getActualDepartedTime());
 
+                                        DatabaseReference databaseReference99 = FirebaseDatabase.getInstance().getReference();
+
+                                        databaseReference99.child("ReportAdmin").child(model.getVesselName()).child(model.getKey()).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                if (dataSnapshot.exists()){
+
+                                                    viewHolder.tvvsei.setText(dataSnapshot.child("bordingA").getValue().toString());
+
+                                                    viewHolder.tvinfant.setText(dataSnapshot.child("numberInfant").getValue().toString());
+                                                    viewHolder.tvchildren.setText(dataSnapshot.child("numberChildren").getValue().toString());
+                                                    viewHolder.tvadults.setText(dataSnapshot.child("numberAdult").getValue().toString());
+                                                    viewHolder.tvcrew.setText(dataSnapshot.child("numberCrew").getValue().toString());
+                                                    viewHolder.totalpassenger.setText(dataSnapshot.child("numberTotalPassenger").getValue().toString());
+
+
+                                                    DatabaseReference fetchData = FirebaseDatabase.getInstance().getReference("Vessels");
+
+                                                    fetchData.child(model.getVesselName()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                            String getTotal = viewHolder.totalpassenger.getText().toString();
+                                                            viewHolder.totalpassenger.setText(getTotal+"/"+dataSnapshot.child("VesselPassengerCapacity").getValue().toString());
+
+
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+
 
                                             if (model.getDistressStatus().equals("Distress")){
                                                 viewHolder.distressnotifieradmin.setVisibility(View.VISIBLE);
@@ -569,6 +609,7 @@ public class StationDepartedFragment extends Fragment {
                                             public void onClick(View view) {
                                                 Intent intent = new Intent(getContext(), ViewDetailedVessels.class);
                                                 intent.putExtra("vesselName", model.getVesselName());
+                                                intent.putExtra("Key", model.getKey());
                                                 startActivity(intent);
                                             }
                                         });

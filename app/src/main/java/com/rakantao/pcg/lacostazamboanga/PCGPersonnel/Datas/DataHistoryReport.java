@@ -17,11 +17,12 @@ public class DataHistoryReport {
     private String timeUploaded;
     private String vesselName;
     private String pushKey;
+    private String Key;
 
     public DataHistoryReport() {
     }
 
-    public DataHistoryReport(String bordingA, String bordingB, String bordingC, String bordingD, String images, String inspectionRemarks, String inspector, String numberAdult, String numberChildren, String numberCrew, String numberInfant, String numberTotalPassenger, String timeUploaded, String vesselName, String pushKey) {
+    public DataHistoryReport(String bordingA, String bordingB, String bordingC, String bordingD, String images, String inspectionRemarks, String inspector, String numberAdult, String numberChildren, String numberCrew, String numberInfant, String numberTotalPassenger, String timeUploaded, String vesselName, String pushKey, String Key) {
         this.bordingA = bordingA;
         this.bordingB = bordingB;
         this.bordingC = bordingC;
@@ -37,6 +38,15 @@ public class DataHistoryReport {
         this.timeUploaded = timeUploaded;
         this.vesselName = vesselName;
         this.pushKey = pushKey;
+        this.Key = Key;
+    }
+
+    public String getKey() {
+        return Key;
+    }
+
+    public void setKey(String key) {
+        Key = key;
     }
 
     public String getPushKey() {

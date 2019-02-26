@@ -64,7 +64,8 @@ public class RegisterStationAdmin extends AppCompatActivity implements View.OnCl
             case R.id.ETSelectStation:
                 final CharSequence[] items2 = {
                         "CGS CEBU",
-                        "CGS BOHOL"
+                        "CGS BOHOL",
+                        "CGS CAMOTES"
                 };
                 AlertDialog.Builder builder2 = new AlertDialog.Builder(RegisterStationAdmin.this);
                 builder2.setTitle("Make your selection");

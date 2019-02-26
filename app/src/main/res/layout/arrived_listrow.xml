@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:text="10:00 AM"
                 android:textColor="@color/black"
-                android:textSize="13sp" />
+                android:textSize="13sp" />z
 
 
         </LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
+
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -14,12 +15,23 @@
     app:cardElevation="10dp"
     tools:ignore="MissingPrefix">
 
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="211dp"
+        android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:orientation="horizontal">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="214dp"
@@ -95,6 +107,138 @@
                 android:text="10:00 AM"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
+
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:text="VSEI"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/TVVseiLeader"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+            android:id="@+id/TVPassDetails"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            android:layout_gravity="center_horizontal"
+            android:text="Passenger Details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:gravity="center"
+                android:weightSum="4"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Adults"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Children"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Infant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Crew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center"
+                android:weightSum="10"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/TVAdultsAdmin"
+                    android:layout_weight="2"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="N/A"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/TVchildrenAdmin"
+                    android:layout_weight="2"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="N/A"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/TVInfantAdmin"
+                    android:layout_weight="2"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="N/A"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/TVcrewAdmin"
+                    android:layout_weight="0"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="N/A"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:text="TOTAL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/TVTotalAdmin"
+                android:textSize="20dp"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:text="N/A"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <FrameLayout
@@ -134,7 +278,7 @@
             </LinearLayout>
 
         </FrameLayout>
-
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/IVPendingImageVessel"
@@ -147,10 +291,30 @@
 
         <TextView
             android:visibility="gone"
+            android:id="@+id/getMin1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:visibility="gone"
             android:id="@+id/getMin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
     </FrameLayout>
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/btnSelectVessel"
+        fontPath="fonts/RobotoCondensed-Regular.ttf"
+        android:text="SELECT VESSEL"
+        android:textColor="@color/black"
+        android:layout_margin="10dp"
+        android:background="@drawable/btn_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingPrefix"/>
+
+</LinearLayout>
 
 </android.support.v7.widget.CardView>

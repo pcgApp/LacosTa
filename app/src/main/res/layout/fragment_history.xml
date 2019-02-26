@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PCGAdmin.Fragments.HistoryFragment">
+    <Button
+        android:id="@+id/btnselectDate"
+        fontPath="fonts/RobotoCondensed-Regular.ttf"
+        android:textSize="19dp"
+        android:text="Select Date"
+        android:background="@drawable/btn_background"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingPrefix" />
+
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+   <android.support.v7.widget.RecyclerView
+       android:id="@+id/recyclerViewHistoryReps"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/TVnotif"
+        android:visibility="gone"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:textSize="24dp"
+        android:textAlignment="center"
+        android:text="No Reports yet."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</FrameLayout>
+
+</LinearLayout>

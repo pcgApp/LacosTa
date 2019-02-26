@@ -13,9 +13,12 @@ public class DetailedVesselViewHolder extends RecyclerView.ViewHolder {
 
     public ImageView vImage;
     public TextView ImageDesc,TimeStamp;
+    View view;
 
     public DetailedVesselViewHolder(View itemView) {
         super(itemView);
+
+        view = itemView;
 
         vImage = itemView.findViewById(R.id.DetailedVesselImage);
         ImageDesc = itemView.findViewById(R.id.DetailedVesselDescription);

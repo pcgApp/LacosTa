@@ -170,6 +170,7 @@ public class NotifAdminFragment extends Fragment {
                                 Intent intent = new Intent(getContext(), DetailedReport.class);
                                 intent.putExtra("key", model.getKey());
                                 intent.putExtra("vesselName", model.getVesselName());
+                                intent.putExtra("vesselKey", model.getVesselKey());
                                 startActivity(intent);
 
                             }

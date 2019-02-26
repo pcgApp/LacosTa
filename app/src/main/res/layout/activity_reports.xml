@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PCGAdmin.Activities.ReportsActivity"
+    tools:ignore="MissingPrefix">
+
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnToday"
+            android:layout_margin="10dp"
+            android:background="@color/colorAccent"
+            android:textSize="18dp"
+            fontPath="fonts/RobotoCondensed-Regular.ttf"
+            android:text="Today"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <Button
+            android:id="@+id/btnMonthly"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:background="@color/colorPrimary"
+            android:textSize="18dp"
+            fontPath="fonts/RobotoCondensed-Regular.ttf"
+            android:text="Monthly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btnYearly"
+            android:layout_margin="10dp"
+            android:background="@color/colorPrimaryDark"
+            android:textSize="18dp"
+            fontPath="fonts/RobotoCondensed-Regular.ttf"
+            android:text="Yearly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_marginTop="15dp"
+        fontPath="fonts/RobotoCondensed-Regular.ttf"
+        android:textSize="50dp"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:text="945"
+        android:id="@+id/TVOverAllTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_gravity="left"
+                android:padding="10dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/TVMPF"
+                    fontPath="fonts/RobotoCondensed-Regular.ttf"
+                    android:textSize="28dp"
+                    android:textColor="@color/black"
+                    android:text="NIL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:textSize="17dp"
+                    android:textColor="@color/black"
+                    android:text="No. of MPF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_gravity="right"
+            android:padding="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/TVMDSD"
+                fontPath="fonts/RobotoCondensed-Regular.ttf"
+                android:textSize="28dp"
+                android:textColor="@color/black"
+                android:text="40"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textSize="17dp"
+                android:textColor="@color/black"
+                android:text="No. of MDSD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:weightSum="3"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+
+            <LinearLayout
+                android:padding="10dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/TVDetained"
+                    fontPath="fonts/RobotoCondensed-Regular.ttf"
+                    android:textSize="28dp"
+                    android:textColor="@color/black"
+                    android:text="40"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:textSize="17dp"
+                    android:textColor="@color/black"
+                    android:text="No. of Detained"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:padding="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/TVEIAR"
+                fontPath="fonts/RobotoCondensed-Regular.ttf"
+                android:textSize="28dp"
+                android:textColor="@color/black"
+                android:text="NIL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textSize="17dp"
+                android:textColor="@color/black"
+                android:text="No. of EIAR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+    <TextView
+        android:textSize="16dp"
+        android:text="Pre-Depature Inspection Conducted \n(Broken down into types of Vessel)"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerVesselTypes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

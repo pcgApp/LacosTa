@@ -63,35 +63,39 @@ public class RegisterSubStation extends AppCompatActivity implements View.OnClic
         switch (view.getId()){
             case R.id.ETSelectSubStation:
                 final CharSequence[] items2 = {
-                        "MANDAUE",
-                        "HAGNAYA",
-                        "NAGA",
-                        "TOLEDO",
-                        "CAMOTES",
-                        "DANAO",
-                        "BANTAYAN",
                         "ADUANA",
-                        "TABUELAN",
-                        "TINAGO",
-                        "BATO",
                         "ARGAO",
-                        "TANGIL",
-                        "JAGNA",
-                        "UBAY",
-                        "TALIBON",
-                        "TUBIGON",
-                        "PANGLAO",
-                        "LOAY",
+                        "BALICASAG",
+                        "BANTAYAN",
+                        "DANAO",
+                        "DUMANJUG",
                         "GETAFE",
+                        "JAGNA",
+                        "LOAY",
+                        "MANDAUE",
+                        "NAGA",
+                        "PANGLAO",
+                        "PILAR",
+                        "PRES CARLOS P GARCIA",
+                        "PURO",
+                        "SAN FRANCISCO",
+                        "SAN REMIGIO",
+                        "STA FE",
+                        "SANTANDER",
+                        "TABUELAN",
                         "TAGBILARAN",
-                        "PRESIDENT CARLOS P GARCIA"
+                        "TALIBON",
+                        "TINAGO",
+                        "TOLEDO",
+                        "TUBIGON",
+                        "UBAY"
                 };
 
                 AlertDialog.Builder builder2 = new AlertDialog.Builder(RegisterSubStation.this);
                 builder2.setTitle("Make your selection");
                 builder2.setItems(items2, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, final int item) {
-                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("SubStations");
 
                         databaseReference.orderByChild("SubStation").equalTo(String.valueOf(items2[item])).addValueEventListener(new ValueEventListener() {
                             @Override
@@ -114,7 +118,7 @@ public class RegisterSubStation extends AppCompatActivity implements View.OnClic
                         });
 
                     }
-                });////////////////////////////////////////
+                });
                 AlertDialog alert2 = builder2.create();
                 alert2.show();
                 break;
@@ -153,31 +157,35 @@ public class RegisterSubStation extends AppCompatActivity implements View.OnClic
 
                     String MyStation = null;
                     if (getStation.equals("MANDAUE")
-                            || getStation.equals("HAGNAYA")
+                            || getStation.equals("STA FE")
                             || getStation.equals("NAGA")
                             || getStation.equals("TOLEDO")
-                            || getStation.equals("CAMOTES")
                             || getStation.equals("DANAO")
                             || getStation.equals("BANTAYAN")
                             || getStation.equals("ADUANA")
                             || getStation.equals("TABUELAN")
                             || getStation.equals("TINAGO")
-                            || getStation.equals("BATO")
+                            || getStation.equals("SAN REMIGIO")
                             || getStation.equals("ARGAO")
-                            || getStation.equals("TANGIL")){
+                            || getStation.equals("SANTANDER")
+                            || getStation.equals("DUMANJUG")){
 
                         MyStation = "CGS CEBU";
-                    }else if (getStation.equals("JAGNA")
+
+                    }else if ((getStation.equals("JAGNA")
                             || getStation.equals("UBAY")
                             || getStation.equals("TALIBON")
                             || getStation.equals("TUBIGON")
                             || getStation.equals("PANGLAO")
                             || getStation.equals("LOAY")
                             || getStation.equals("GETAFE")
+                            || getStation.equals("BALICASAG")
                             || getStation.equals("TAGBILARAN")
-                            || getStation.equals("PRESIDENT CARLOS P GARCIA")) {
+                            || getStation.equals("PRES CARLOS P GARCIA"))){
 
                         MyStation = "CGS BOHOL";
+                    }else {
+                        MyStation = "CGS CAMOTES";
                     }
 
 
@@ -201,6 +209,9 @@ public class RegisterSubStation extends AppCompatActivity implements View.OnClic
 
                                 DatabaseReference databaseReference = firebaseDatabase.getReference("Users").child(user_id);
                                 databaseReference.setValue(User);
+
+                                DatabaseReference saveSubstation = FirebaseDatabase.getInstance().getReference("SubStations").child(user_id);
+                                saveSubstation.setValue(User);
 
                                 Toast.makeText(RegisterSubStation.this, "You've Successfully Registered", Toast.LENGTH_LONG).show();
                                 progressBar.setVisibility(View.INVISIBLE);

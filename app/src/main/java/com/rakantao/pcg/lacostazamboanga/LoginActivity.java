@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,12 +38,12 @@ import org.json.JSONObject;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
     private EditText etEmail;
     private EditText etPassword;
     private Button btnLogin;
-    private TextView tvNoAccount;
     private FirebaseAuth firebaseAuth;
     private ProgressBar mProgressBar;
     DatabaseReference databaseReference;
@@ -73,13 +72,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         etEmail = findViewById(R.id.et_username);
         etPassword =  findViewById(R.id.et_password);
         btnLogin =  findViewById(R.id.btn_login);
-        tvNoAccount = findViewById(R.id.tvNoAccount);
+       /* tvNoAccount = findViewById(R.id.tvNoAccount);*/
         mProgressBar =  findViewById(R.id.progressBarLogin);
 
         btnQr.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
 
-        tvNoAccount.setOnClickListener(this);
 
     }
 
@@ -118,10 +116,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btnQr:
                 qrScan.initiateScan();
                 break;
-            case R.id.tvNoAccount:
+            /*case R.id.tvNoAccount:
                 startActivity(new Intent(LoginActivity.this, RegisterUser.class));
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                break;
+                break;*/
             case R.id.btn_login:
                 String getEmail = etEmail.getText().toString();
                 String getPass = etPassword.getText().toString();

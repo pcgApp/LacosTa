@@ -115,7 +115,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final CharSequence[] items2 = {
-                        "PCG Bohol","PCG Cebu"
+                        "PCG Bohol","PCG Cebu", "PCG Camotes"
                 };
                 AlertDialog.Builder builder2 = new AlertDialog.Builder(RegisterActivity.this);
                 builder2.setTitle("Make your selection");
@@ -137,7 +137,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (getStation.equals("PCG Bohol")){
                     final CharSequence[] items2 = {
-                            "JAGNA","UBAY","TALIBON","TUBIGON","PANGLAO","LOAY","GETAFE","PRESIDENT CARLOS P GARCIA"
+                            "BALICASAG","GETAFE","JAGNA","LOAY","PANGLAO","PRES CARLOS P GARCIA","TAGBILARAN","TALIBON","TUBIGON","UBAY"
                     };
                     AlertDialog.Builder builder2 = new AlertDialog.Builder(RegisterActivity.this);
                     builder2.setTitle("Make your selection");
@@ -151,7 +151,21 @@ public class RegisterActivity extends AppCompatActivity {
                     alert2.show();
                 }else if (getStation.equals("PCG Cebu")){
                     final CharSequence[] items2 = {
-                            "MANDAUE","HAGNAYA","NAGA","TOLEDO","CAMOTES","DANAO","BANTAYAN","ADUANA","TABUELAN","TINAGO","BATO","ARGAO","TANGIL"
+                            "ADUANA","ARGAO","MANDAUE","TINAGO","NAGA","TABUELAN","SANTANDER","TOLEDO","STA FE","BANTAYAN","SAN REMIGIO","DUMANJUG","DANAO"
+                    };
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(RegisterActivity.this);
+                    builder2.setTitle("Make your selection");
+                    builder2.setItems(items2, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int item) {
+                            // Do something with the selection
+                            btnSubStation.setText(items2[item]);
+                        }
+                    });
+                    AlertDialog alert2 = builder2.create();
+                    alert2.show();
+                }else if (getStation.equals("PCG Camotes")) {
+                    final CharSequence[] items2 = {
+                            "PILAR","PURO","SAN FRANCISCO"
                     };
                     AlertDialog.Builder builder2 = new AlertDialog.Builder(RegisterActivity.this);
                     builder2.setTitle("Make your selection");

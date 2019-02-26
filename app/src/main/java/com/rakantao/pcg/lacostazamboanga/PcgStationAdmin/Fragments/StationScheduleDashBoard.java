@@ -161,7 +161,7 @@ public class StationScheduleDashBoard extends Fragment {
                                     viewHolder.tvdes.setText(model.getDestination());
                                     viewHolder.tveta.setText(model.getArrivalTime());
 
-                                    if (model.getVesselStatus().equals("Pending")){
+                                    if (model.getVesselStatus().equals("Pending") && model.getVesselStatus().equals("Arrived")){
                                         viewHolder.cardviewDepart.setVisibility(View.GONE);
                                     }else {
                                         viewHolder.cardviewDepart.setVisibility(View.VISIBLE);
@@ -282,7 +282,7 @@ public class StationScheduleDashBoard extends Fragment {
                                     viewHolder.tvorigintime.setText(model.getDepartureTime());
                                     viewHolder.tvorigin.setText(model.getOrigin());
 
-                                    if (model.getVesselStatus().equals("Pending")){
+                                    if (model.getVesselStatus().equals("Pending") && model.getVesselStatus().equals("Arrived")){
                                         viewHolder.cardviewArrivals.setVisibility(View.GONE);
                                     }else {
                                         viewHolder.cardviewArrivals.setVisibility(View.VISIBLE);
@@ -294,9 +294,7 @@ public class StationScheduleDashBoard extends Fragment {
                                         if (model.getVesselStatus().equals("Departed")){
                                             viewHolder.tvRemarks.setText("Arriving");
                                         }else {
-
                                             viewHolder.tvRemarks.setText(model.getVesselStatus());
-
                                         }
                                     }
 

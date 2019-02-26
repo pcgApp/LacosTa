@@ -38,9 +38,8 @@ public class ReportFragment extends Fragment {
     RecyclerView recyclerView;
     View view;
 
-    private String dayOfWeek;
+     String dayOfWeek;
 
-    private DatabaseReference mDatabase;
     private DatabaseReference mDatabaseHistory;
     private LinearLayoutManager linearLayoutManager;
 
@@ -91,14 +90,17 @@ public class ReportFragment extends Fragment {
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Report").child(uid).child(dayOfWeek);
         mDatabaseHistory = FirebaseDatabase.getInstance().getReference().child("HistoryReportRecords");
         recyclerView.setLayoutManager(linearLayoutManager);
 
         btnreport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 startActivity(new Intent(getContext(), SendReportActivity.class));
+                 startActivity(new Intent(getContext(), SendReportActivity.class)
+                         .putExtra("VesselName", "None")
+                         .putExtra( "VesselKey", "None")
+                         .putExtra( "VesselType", "None")
+                         .putExtra( "VesselDay", "None"));
             }
         });
 
@@ -120,9 +122,10 @@ public class ReportFragment extends Fragment {
 
         ) {
             @Override
-            protected void populateViewHolder(ReportsViewHiolder viewHolder, DataHistoryReport model, int position) {
+            protected void populateViewHolder(ReportsViewHiolder viewHolder, final DataHistoryReport model, int position) {
 
-                final String valueKey = model.getPushKey();
+                final String valueKey = model.getKey();
+                final String key = model.getPushKey();
                 final String vesselName = model.getVesselName();
 
                 viewHolder.tvVesselName.setText("Vessel Name : " + model.getVesselName());
@@ -137,6 +140,7 @@ public class ReportFragment extends Fragment {
                     Intent intent = new Intent(getContext(), DetailViewHistoryReportsActivity.class);
                     intent.putExtra("valueKey", valueKey);
                     intent.putExtra("vesselName", vesselName);
+                    intent.putExtra("key",key);
                     startActivity(intent);
 
                     }

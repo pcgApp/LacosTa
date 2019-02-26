@@ -40,9 +40,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class SubStationPendingFragment extends Fragment {
 
 
@@ -52,6 +49,7 @@ public class SubStationPendingFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private DatabaseReference mUserDatabase;
     private FirebaseAuth firebaseAuth;
+
     View view;
     String userID;
     public String Origin;
@@ -134,9 +132,10 @@ public class SubStationPendingFragment extends Fragment {
                                     DataVesselSched.class,
                                     R.layout.pending_listrow,
                                     PendingViewholder.class,
-                                    childRef.orderByChild("OriginSubStation").equalTo(Origin)
+                                    childRef.orderByChild("OriginSubStation").equalTo(Origin).limitToLast(5)
 
                             ) {
+
                                 @Override
                                 protected void populateViewHolder(final PendingViewholder viewHolder, final DataVesselSched model, int position) {
                                     viewHolder.vesseltype.setText(model.getVesselType());
@@ -148,6 +147,53 @@ public class SubStationPendingFragment extends Fragment {
                                     viewHolder.schedday.setText(model.getScheduleDay());
 
                                     viewHolder.btnclear.setVisibility(View.GONE);
+
+                                    if (model.getToAppear().equals("Not Appear")){
+                                        viewHolder.cardViewPending.setVisibility(View.GONE);
+                                    }else {
+                                        viewHolder.cardViewPending.setVisibility(View.VISIBLE);
+                                    }
+
+                                    DatabaseReference databaseReference99 = FirebaseDatabase.getInstance().getReference();
+
+                                    databaseReference99.child("ReportAdmin").child(model.getVesselName()).child(model.getKey()).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            if (dataSnapshot.exists()){
+
+                                                viewHolder.vsei.setText(dataSnapshot.child("bordingA").getValue().toString());
+
+                                                viewHolder.tvinfant.setText(dataSnapshot.child("numberInfant").getValue().toString());
+                                                viewHolder.tvchildren.setText(dataSnapshot.child("numberChildren").getValue().toString());
+                                                viewHolder.tvadults.setText(dataSnapshot.child("numberAdult").getValue().toString());
+                                                viewHolder.tvcrew.setText(dataSnapshot.child("numberCrew").getValue().toString());
+                                                viewHolder.totalpassenger.setText(dataSnapshot.child("numberTotalPassenger").getValue().toString());
+
+
+                                                DatabaseReference fetchData = FirebaseDatabase.getInstance().getReference("Vessels");
+
+                                                fetchData.child(model.getVesselName()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                                        String getTotal = viewHolder.totalpassenger.getText().toString();
+                                                        viewHolder.totalpassenger.setText(getTotal+"/"+dataSnapshot.child("VesselPassengerCapacity").getValue().toString());
+
+
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(DatabaseError databaseError) {
+
+                                                    }
+                                                });
+
+                                            }
+                                        }
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
 
                                     final Handler handler = new Handler();
                                     final int delay = 1000; //milliseconds
@@ -177,9 +223,40 @@ public class SubStationPendingFragment extends Fragment {
 
                                                 long elapsedMinutes = diff / minutesInMilli;
 
-                                                viewHolder.runnabletime.setText(elapsedHours+ " Hr(s) : "+ elapsedMinutes+" Min(s)");
+                                                if (model.getRemarks().equals("OnHold")){
+                                                    viewHolder.runnabletime.setText("On hold");
+                                                    viewHolder.btnclear.setText("EMERGENCY CLEAR");
+                                                }else {
 
+                                                    viewHolder.btnclear.setText("CLEAR");
+                                                    if (elapsedHours <= 0 && elapsedMinutes <=0){
 
+                                                        DatabaseReference checkReport5 = FirebaseDatabase.getInstance().getReference();
+
+                                                        checkReport5.child("AdminImagesReport").child(model.getVesselName()).child(model.getKey()).addValueEventListener(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                if (dataSnapshot.exists()){
+
+                                                                    viewHolder.runnabletime.setText("Waiting to Substation to Clear");
+
+                                                                } else {
+
+                                                                    viewHolder.runnabletime.setText("Vessel Not Yet Boarded");
+
+                                                                }
+                                                            }
+
+                                                            @Override
+                                                            public void onCancelled(DatabaseError databaseError) {
+
+                                                            }
+                                                        });
+
+                                                    }else {
+                                                        viewHolder.runnabletime.setText(elapsedHours+ " Hr(s) : "+ elapsedMinutes+" Min(s)");
+                                                    }
+                                                }
                                                 getMin[0] = elapsedMinutes;
                                             } catch (ParseException e) {
                                                 e.printStackTrace();
@@ -209,19 +286,129 @@ public class SubStationPendingFragment extends Fragment {
 
                                     }
 
+                                    DatabaseReference checkReport1 = FirebaseDatabase.getInstance().getReference();
+
+                                    checkReport1.child("AdminImagesReport").child(model.getVesselName()).child(model.getKey()).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            if (dataSnapshot.exists()){
+                                                viewHolder.btnclear.setVisibility(View.VISIBLE);
+
+                                            } else {
+                                                viewHolder.btnclear.setVisibility(View.GONE);                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+                                    viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            DatabaseReference checkReport = FirebaseDatabase.getInstance().getReference();
+
+                                            checkReport.child("AdminImagesReport").child(model.getVesselName()).child(model.getKey()).addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    if (dataSnapshot.exists()){
+                                                        viewHolder.btnclear.setVisibility(View.VISIBLE);
+
+                                                    } else {
+                                                        Toast.makeText(getContext(), "Vessel is still on scheduled for Inspection", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
+
+                                        }
+                                    });
+
+
+
+
+                                    viewHolder.btnclear.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+
+                                            DateFormat df = new SimpleDateFormat("h:mm a");
+                                            String date = df.format(Calendar.getInstance().getTime());
+
+                                            DatabaseReference SaveDeparted;
+
+                                            SaveDeparted = FirebaseDatabase.getInstance()
+                                                    .getReference("VesselDetails")
+                                                    .child(model.getVesselName())
+                                                    .child("VesselStatus");
+                                            SaveDeparted.setValue("Departed");
+
+                                            DatabaseReference saveActualTime = FirebaseDatabase.getInstance()
+                                                    .getReference("VesselDetails")
+                                                    .child((String) viewHolder.vesselname.getText())
+                                                    .child("ActualDepartedTime");
+                                            saveActualTime.setValue(date);
+
+                                            DatabaseReference saveAnotherDeparted = FirebaseDatabase.getInstance()
+                                                    .getReference("VesselSchedule")
+                                                    .child(model.getScheduleDay())
+                                                    .child("Pending")
+                                                    .child(model.getKey())
+                                                    .child("VesselStatus");
+                                            saveAnotherDeparted.setValue("Departed");
+
+                                            DatabaseReference SaveAnotherActualTime = FirebaseDatabase.getInstance()
+                                                    .getReference("VesselSchedule")
+                                                    .child(model.getScheduleDay())
+                                                    .child("Pending")
+                                                    .child(model.getKey())
+                                                    .child("ActualDepartedTime");
+                                            SaveAnotherActualTime.setValue(date);
+
+                                            DatabaseReference SaveintoDashBoard = FirebaseDatabase.getInstance()
+                                                    .getReference("VesselsDashBoardAdmin")
+                                                    .child(model.getScheduleDay())
+                                                    .child(model.getKey())
+                                                    .child("VesselStatus");
+                                            SaveintoDashBoard.setValue("Departed");
+
+                                            //Move Queries
+
+                                            DatabaseReference FromDB = FirebaseDatabase.getInstance()
+                                                    .getReference("VesselSchedule")
+                                                    .child(model.getScheduleDay())
+                                                    .child("Pending")
+                                                    .child(model.getKey());
+
+                                            DatabaseReference ToDB = FirebaseDatabase.getInstance()
+                                                    .getReference("VesselSchedule")
+                                                    .child(model.getScheduleDay())
+                                                    .child("Departed")
+                                                    .child(model.getKey());
+
+                                            //Move Queries
+                                            moveFirebaseRecord1(FromDB ,ToDB);
+                                        }
+                                    });
+
                                     viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
 
                                             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-                                            databaseReference.child("AdminImagesReport").child(model.getVesselName()).addValueEventListener(new ValueEventListener() {
+                                            databaseReference.child("AdminImagesReport").child(model.getVesselName()).child(model.getKey()).addValueEventListener(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                                     if (dataSnapshot.exists()){
                                                         //Intent intent = new Intent(getContext(), DetailViewHistoryReportsActivity.class);
                                                         Intent intent = new Intent(getContext(), ViewDetailedVessels.class);
                                                         intent.putExtra("vesselName", model.getVesselName());
+                                                        intent.putExtra("Key", model.getKey());
                                                         startActivity(intent);
                                                     } else {
                                                         Toast.makeText(getContext(), "Vessel is still on scheduled for Inspection", Toast.LENGTH_SHORT).show();
@@ -284,6 +471,31 @@ public class SubStationPendingFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+    }
+
+    public void moveFirebaseRecord1(final DatabaseReference fromPath, final DatabaseReference toPath) {
+        fromPath.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                toPath.setValue(dataSnapshot.getValue(), new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError firebaseError, DatabaseReference firebase) {
+                        if (firebaseError != null) {
+                            Toast.makeText(getContext(), "Copy failed", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+                            fromPath.removeValue();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError firebaseError) {
+                Toast.makeText(getContext(), "Copy failed", Toast.LENGTH_SHORT).show();
             }
         });
     }

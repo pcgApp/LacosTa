@@ -54,9 +54,9 @@ public class RegisterVessel extends AppCompatActivity {
         VesselType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 final CharSequence[] items2 = {
-                        "Passenger Vessel", "Cargo Vessel","Tanker","Small Boat"
-                };
+                        "Fast Craft","Passenger Vessel", "Cargo Vessel","Tanker","Small Boat","Passenger Cargo", "Barge", "Motor Banca","Tramping"};
 
                 AlertDialog.Builder builder2 = new AlertDialog.Builder(RegisterVessel.this);
                 builder2.setTitle("Make your selection");

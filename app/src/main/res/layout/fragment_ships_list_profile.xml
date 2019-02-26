@@ -1,28 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PCGAdmin.Fragments.ShipsListProfileFragment">
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerShipsList"
+    <LinearLayout
+        android:layout_marginBottom="20dp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:textAlignment="center"
+            android:id="@+id/ETSearchContent"
+            android:inputType="text"
+            android:background="@drawable/round_corners"
+            android:layout_width="230dp"
+            android:layout_height="40dp" />
+
+        <ImageButton
+            android:id="@+id/btnSearch"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_marginLeft="20dp"
+            android:backgroundTint="#7a2aa7"
+            android:background="@drawable/round_corners"
+            android:src="@drawable/search"
+            android:layout_width="35dp"
+            android:layout_height="35dp" />
+    </LinearLayout>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerShipsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
+        </android.support.v7.widget.RecyclerView>
 
 
 
 
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/btnAddVessel"
-        android:src="@drawable/add"
-        android:layout_margin="25dp"
-        android:layout_gravity="bottom|right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-</FrameLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btnAddVessel"
+            android:src="@drawable/add"
+            android:layout_margin="25dp"
+            android:layout_gravity="bottom|right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+</LinearLayout>

@@ -1,9 +1,11 @@
 package com.rakantao.pcg.lacostazamboanga.PCGPersonnel.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -12,6 +14,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.rakantao.pcg.lacostazamboanga.PCGAdmin.Activities.FullScreenImageActivity;
+import com.rakantao.pcg.lacostazamboanga.PCGAdmin.Activities.ViewDetailedVessels;
 import com.rakantao.pcg.lacostazamboanga.PCGAdmin.Datas.DataImageReport;
 import com.rakantao.pcg.lacostazamboanga.PCGAdmin.Datas.DataVesselSched;
 import com.rakantao.pcg.lacostazamboanga.PCGAdmin.ViewHolders.DetailedVesselViewHolder;
@@ -48,6 +52,7 @@ public class DetailViewHistoryReportsActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
 
     private String valueKey;
+    private String key;
     private String vesselName;
 
     @Override
@@ -56,6 +61,7 @@ public class DetailViewHistoryReportsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail_view_history_reports);
 
         valueKey = getIntent().getStringExtra("valueKey");
+        key = getIntent().getStringExtra("key");
         vesselName = getIntent().getStringExtra("vesselName");
 
         tvDetailHistoryVesselName = findViewById(R.id.TVDetailHistoryReportVesselName);
@@ -82,35 +88,25 @@ public class DetailViewHistoryReportsActivity extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
 
-        mDabatabaseHistory = FirebaseDatabase.getInstance().getReference("HistoryReportRecords");
-        mDatabaseHistoryImages = FirebaseDatabase.getInstance().getReference("HistoryReportImages");
+    }
 
-        mDabatabaseHistory.child(valueKey).addValueEventListener(new ValueEventListener() {
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        mDabatabaseHistory = FirebaseDatabase.getInstance().getReference("HistoryReportRecords");
+
+        mDatabaseHistoryImages = FirebaseDatabase.getInstance().getReference("AdminImagesReport").child(vesselName).child(valueKey);
+        mDabatabaseHistory.child(key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-
-                    //bordingA
-                    //bordingB
-                    //bordingC
-                    //bordingD
-                    //inspectionRemarks
-                    //inspector
-                    //numberAdult
-                    //numberChildren
-                    //numberCrew
-                    //numberInfant
-                    //numberTotalPassenger
-                    //timeUploaded
-                    //vesselName
-                    //pushKey
 
                     String bordingA = dataSnapshot.child("bordingA").getValue().toString();
                     String bordingB = dataSnapshot.child("bordingB").getValue().toString();
                     String bordingC = dataSnapshot.child("bordingC").getValue().toString();
                     String bordingD = dataSnapshot.child("bordingD").getValue().toString();
                     String inspectionRemarks = dataSnapshot.child("inspectionRemarks").getValue().toString();
-                    String inspector = dataSnapshot.child("inspector").getValue().toString();
                     String numberAdult = dataSnapshot.child("numberAdult").getValue().toString();
                     String numberChildren = dataSnapshot.child("numberChildren").getValue().toString();
                     String numberCrew = dataSnapshot.child("numberCrew").getValue().toString();
@@ -118,15 +114,8 @@ public class DetailViewHistoryReportsActivity extends AppCompatActivity {
                     String numberTotalPassenger = dataSnapshot.child("numberTotalPassenger").getValue().toString();
                     String timeUploaded = dataSnapshot.child("timeUploaded").getValue().toString();
                     String vesselName = dataSnapshot.child("vesselName").getValue().toString();
-                    String pushKey = dataSnapshot.child("pushKey").getValue().toString();
 
                     tvDetailHistoryVesselName.setText(vesselName);
-                    tvDetailHistoryVesselType.setText("");
-                    tvDetailHistoryOrigin.setText("");
-                    tvDetailHistoryDestination.setText("");
-                    tvDetailHistoryETD.setText("");
-                    tvDetailHistoryETA.setText("");
-                    tvDetailHistoryCapacity.setText("");
                     tvDetailHistoryCrew.setText(numberCrew);
                     tvDetailHistoryPersonA.setText(bordingA);
                     tvDetailHistoryPersonB.setText(bordingB);
@@ -139,6 +128,8 @@ public class DetailViewHistoryReportsActivity extends AppCompatActivity {
                     tvDetailHistoryChildren.setText(numberChildren);
                     tvDetailHistoryAdult.setText(numberAdult);
 
+
+
                 }
             }
 
@@ -148,22 +139,25 @@ public class DetailViewHistoryReportsActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
         FirebaseRecyclerAdapter <DataImageReport, DetailedVesselViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<DataImageReport, DetailedVesselViewHolder>(
 
                 DataImageReport.class,
                 R.layout.detailedvessel_listrow,
                 DetailedVesselViewHolder.class,
-                mDatabaseHistoryImages.child(valueKey)
+                mDatabaseHistoryImages
         ) {
             @Override
-            protected void populateViewHolder(DetailedVesselViewHolder viewHolder, DataImageReport model, int position) {
+            protected void populateViewHolder(DetailedVesselViewHolder viewHolder, final DataImageReport model, int position) {
                 viewHolder.vImage(model.getImageUrl(), getApplicationContext());
+
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(DetailViewHistoryReportsActivity.this, FullScreenImageActivity.class);
+                        intent.putExtra("ImageURL", model.getImageUrl());
+                        startActivity(intent);
+                    }
+                });
 
                 mDatabase = FirebaseDatabase.getInstance().getReference();
 

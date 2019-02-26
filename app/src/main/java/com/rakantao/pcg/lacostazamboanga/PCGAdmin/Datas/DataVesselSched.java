@@ -19,6 +19,8 @@ public class DataVesselSched {
     private String DistressStatus;
     private String DestinationSubStation;
     private String OriginSubStation;
+    private String ToAppear;
+    private String Remarks;
 
     public DataVesselSched(){
 
@@ -27,7 +29,7 @@ public class DataVesselSched {
     public DataVesselSched(String VesselType, String VesselName, String ScheduleDay, String Origin, String DepartureTime,
                            String Destination, String ArrivalTime, String ActualDepartedTime, String Key, String VesselStatus,
                            String OriginStation, String DestinationStation, String PassengerCapacity, String NumberOfCrew,
-                           String DistressStatus, String OriginSubStation, String DestinationSubStation){
+                           String DistressStatus, String OriginSubStation, String DestinationSubStation, String ToAppear, String Remarks){
 
         this.VesselType = VesselType;
         this.VesselName = VesselName;
@@ -46,8 +48,26 @@ public class DataVesselSched {
         this.DistressStatus = DistressStatus;
         this.DestinationSubStation = DestinationSubStation;
         this.OriginSubStation = OriginSubStation;
+        this.ToAppear = ToAppear;
+        this.Remarks = Remarks;
 
 
+    }
+
+    public String getRemarks() {
+        return Remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        Remarks = remarks;
+    }
+
+    public String getToAppear() {
+        return ToAppear;
+    }
+
+    public void setToAppear(String toAppear) {
+        ToAppear = toAppear;
     }
 
     public String getDestinationSubStation() {

@@ -1,10 +1,12 @@
 package com.rakantao.pcg.lacostazamboanga.PCGAdmin.Activities;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +20,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.rakantao.pcg.lacostazamboanga.PCGAdmin.Datas.DataImageReport;
 import com.rakantao.pcg.lacostazamboanga.PCGAdmin.Datas.DataVesselSched;
 import com.rakantao.pcg.lacostazamboanga.PCGAdmin.ViewHolders.DetailedVesselViewHolder;
-import com.rakantao.pcg.lacostazamboanga.PCGAdmin.ViewHolders.PendingViewholder;
 import com.rakantao.pcg.lacostazamboanga.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
@@ -37,6 +38,7 @@ public class ViewDetailedVessels extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private DatabaseReference mUserDatabase,databaseReferencenew;
     String VesselName;
+    String Key;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -64,12 +66,14 @@ public class ViewDetailedVessels extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerVesselDetail);
 
         VesselName = this.getIntent().getStringExtra("vesselName");
+        Key = this.getIntent().getStringExtra("Key");
 
         linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         childRef = mDatabaseRef.child("AdminImagesReport");
 
         recyclerView.setLayoutManager(linearLayoutManager);
+
     }
     @Override
     public void onStart() {
@@ -82,11 +86,20 @@ public class ViewDetailedVessels extends AppCompatActivity {
                         DataImageReport.class,
                         R.layout.detailedvessel_listrow,
                         DetailedVesselViewHolder.class,
-                        childRef.child(VesselName)
+                        childRef.child(VesselName).child(Key)
                 ) {
                     @Override
                     protected void populateViewHolder(final DetailedVesselViewHolder viewHolder, final DataImageReport model, int position) {
                         viewHolder.vImage(model.getImageUrl(), getApplicationContext());
+
+                        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(ViewDetailedVessels.this, FullScreenImageActivity.class);
+                                intent.putExtra("ImageURL", model.getImageUrl());
+                                startActivity(intent);
+                            }
+                        });
 
                         mUserDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -105,7 +118,7 @@ public class ViewDetailedVessels extends AppCompatActivity {
 
                                     databaseReferencenew = FirebaseDatabase.getInstance().getReference();
 
-                                    databaseReferencenew.child("ReportAdmin").child(dataVesselSched.getVesselName()).addValueEventListener(new ValueEventListener() {
+                                    databaseReferencenew.child("ReportAdmin").child(dataVesselSched.getVesselName()).child(Key).addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             if (dataSnapshot.exists()){
@@ -119,7 +132,7 @@ public class ViewDetailedVessels extends AppCompatActivity {
                                                 vTimeStamp.setText(dataSnapshot.child("timeUploaded").getValue().toString());
                                                 TVDetailedvTeam.setText("POIC : " + boardingA + "\n Members : \n" + boardingB + "\n" + boardingC + "\n" + boardingD);
 
-                                                DatabaseReference mUserDatabase1 = FirebaseDatabase.getInstance().getReference().child("VesselImage").child(dataVesselSched.getVesselName());
+                                                DatabaseReference mUserDatabase1 = FirebaseDatabase.getInstance().getReference().child("VesselImage").child(dataVesselSched.getVesselName()).child(Key);
 
                                                 mUserDatabase1.addValueEventListener(new ValueEventListener() {
                                                     @Override
@@ -178,4 +191,22 @@ public class ViewDetailedVessels extends AppCompatActivity {
                 };
         recyclerView.setAdapter(firebaseRecyclerAdapter);
     }
+ /*   @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(ViewDetailedVessels.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setMessage("Are you sure you want to go back?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        startActivity(new Intent(ViewDetailedVessels.this, PCGAdminHome.class));
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    }
+
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }*/
 }

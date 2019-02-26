@@ -48,7 +48,7 @@
         <ImageView
             android:layout_width="250dp"
             android:layout_height="200dp"
-            android:src="@drawable/qqqz" />
+            android:src="@drawable/okklogo" />
 
         <EditText
             android:imeOptions="actionNext"
@@ -89,7 +89,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <LinearLayout
+        <!--<LinearLayout
             android:gravity="center"
             android:layout_marginTop="20dp"
             android:orientation="horizontal"
@@ -111,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:text="SIGN UP"
                 android:textColor="@android:color/white" />
-        </LinearLayout>
+        </LinearLayout>-->
 
     </LinearLayout>
 

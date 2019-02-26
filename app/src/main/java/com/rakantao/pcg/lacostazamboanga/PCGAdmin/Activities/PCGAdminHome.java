@@ -24,6 +24,7 @@ import com.nightonke.boommenu.Piece.PiecePlaceEnum;
 import com.rakantao.pcg.lacostazamboanga.LoginActivity;
 import com.rakantao.pcg.lacostazamboanga.PCGAdmin.Fragments.ChatAdminFragment;
 import com.rakantao.pcg.lacostazamboanga.PCGAdmin.Fragments.DistressReports;
+import com.rakantao.pcg.lacostazamboanga.PCGAdmin.Fragments.HistoryFragment;
 import com.rakantao.pcg.lacostazamboanga.PCGAdmin.Fragments.NewsFeedAdminFragment;
 import com.rakantao.pcg.lacostazamboanga.PCGAdmin.Fragments.NotifAdminFragment;
 import com.rakantao.pcg.lacostazamboanga.PCGAdmin.Fragments.ParentTabTimeMonitorFragment;
@@ -49,8 +50,8 @@ public class PCGAdminHome extends AppCompatActivity {
 
     BoomMenuButton boomMenuButton;
     FirebaseAuth firebaseAuth;
-        private TabLayout tabLayout;
-        private ViewPager viewPager;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -65,8 +66,8 @@ public class PCGAdminHome extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         boomMenuButton = findViewById(R.id.boomAdmin);
-        boomMenuButton.setPiecePlaceEnum(PiecePlaceEnum.DOT_6_1);
-        boomMenuButton.setButtonPlaceEnum(ButtonPlaceEnum.SC_6_1);
+        boomMenuButton.setPiecePlaceEnum(PiecePlaceEnum.DOT_3_1);
+        boomMenuButton.setButtonPlaceEnum(ButtonPlaceEnum.SC_3_1);
         initBoomMenu();
 
         viewPager = findViewById(R.id.viewpager);
@@ -79,11 +80,13 @@ public class PCGAdminHome extends AppCompatActivity {
     }
 
     private void setupTabIcons() {
+
         tabLayout.getTabAt(0).setIcon(R.drawable.newspaper);
         tabLayout.getTabAt(1).setIcon(R.drawable.timleft);
         tabLayout.getTabAt(2).setIcon(R.drawable.alarm);
-        tabLayout.getTabAt(3).setIcon(R.drawable.chat1);
+        tabLayout.getTabAt(3).setIcon(R.drawable.history);
         tabLayout.getTabAt(4).setIcon(R.drawable.notification);
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -91,7 +94,7 @@ public class PCGAdminHome extends AppCompatActivity {
         adapter.addFragment(new NewsFeedAdminFragment(), "");
         adapter.addFragment(new ParentTabTimeMonitorFragment(), "");
         adapter.addFragment(new DistressReports(), "");
-        adapter.addFragment(new ChatAdminFragment(), "");
+        adapter.addFragment(new HistoryFragment(), "");
         adapter.addFragment(new NotifAdminFragment(), "");
         viewPager.setAdapter(adapter);
     }
@@ -133,24 +136,14 @@ public class PCGAdminHome extends AppCompatActivity {
                 startActivity(new Intent(PCGAdminHome.this, ProfilesActivity.class));
             }
         });
-        TextOutsideCircleButton.Builder newBuilder2 = new TextOutsideCircleButton.Builder().listener(new OnBMClickListener() {
-            @Override
-            public void onBoomButtonClick(int index) {
 
-            }
-        });
         TextOutsideCircleButton.Builder newBuilder3 = new TextOutsideCircleButton.Builder().listener(new OnBMClickListener() {
             @Override
             public void onBoomButtonClick(int index) {
-
+                startActivity(new Intent(PCGAdminHome.this, ReportsActivity.class));
             }
         });
-        TextOutsideCircleButton.Builder newBuilder4 = new TextOutsideCircleButton.Builder().listener(new OnBMClickListener() {
-            @Override
-            public void onBoomButtonClick(int index) {
 
-            }
-        });
         TextOutsideCircleButton.Builder newBuilder5 = new TextOutsideCircleButton.Builder().listener(new OnBMClickListener() {
             @Override
                 public void onBoomButtonClick(int index) {
@@ -159,25 +152,15 @@ public class PCGAdminHome extends AppCompatActivity {
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
-        TextOutsideCircleButton.Builder newBuilder6 = new TextOutsideCircleButton.Builder().listener(new OnBMClickListener() {
-            @Override
-            public void onBoomButtonClick(int index) {
-                startActivity(new Intent(PCGAdminHome.this, TrackActivity.class));
-            }
-        });
 
-        newBuilder6.normalImageRes(R.drawable.map).normalText("Track").imagePadding(new Rect(25, 25, 25, 25)).textSize(14);
         newBuilder1.normalImageRes(R.drawable.prof).normalText("Profile").imagePadding(new Rect(25, 25, 25, 25)).textSize(14);
-        newBuilder2.normalImageRes(R.drawable.set).normalText("Settings").imagePadding(new Rect(25, 25, 25, 25)).textSize(14);
-        newBuilder3.normalImageRes(R.drawable.question).normalText("About us").imagePadding(new Rect(25, 25, 25, 25)).textSize(14);
-        newBuilder4.normalImageRes(R.drawable.bug).normalText("Report Problem").imagePadding(new Rect(25, 25, 25, 25)).textSize(14);
+        newBuilder3.normalImageRes(R.drawable.reportzss).normalText("Reports").imagePadding(new Rect(25, 25, 25, 25)).textSize(14);
         newBuilder5.normalImageRes(R.drawable.powerbutton).normalText("Log Out").imagePadding(new Rect(25, 25, 25, 25)).textSize(14);
 
-        this.boomMenuButton.addBuilder(newBuilder6);
+
+
         this.boomMenuButton.addBuilder(newBuilder1);
-        this.boomMenuButton.addBuilder(newBuilder2);
         this.boomMenuButton.addBuilder(newBuilder3);
-        this.boomMenuButton.addBuilder(newBuilder4);
         this.boomMenuButton.addBuilder(newBuilder5);
 
     }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/viewdash1"
+        android:textColor="@color/white"
+        android:textSize="17dp"
+        fontPath="fonts/RobotoCondensed-Regular.ttf"
+        android:layout_margin="10dp"
+        android:background="@drawable/btn_background_2"
+        android:text="View dashboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingPrefix" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerPending1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>

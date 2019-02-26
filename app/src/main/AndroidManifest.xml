@@ -100,8 +100,14 @@
 
         <activity android:name=".PCGAdmin.FirebaseQueryActivity" />
         <activity android:name=".RegisterSubStation" />
-        <activity android:name=".PcgSubStationAdmin.Activities.SubStationDashBoardActivity"
-            android:screenOrientation="landscape"></activity>
+        <activity
+            android:name=".PcgSubStationAdmin.Activities.SubStationDashBoardActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".PCGAdmin.Activities.FullScreenImageActivity" />
+        <activity android:name=".PCGPersonnel.Activities.SelectVesselActivity" />
+        <activity android:name=".PCGAdmin.Activities.ReportsActivity"
+            android:parentActivityName=".PCGAdmin.Activities.PCGAdminHome"></activity>
+
     </application>
 
 </manifest>

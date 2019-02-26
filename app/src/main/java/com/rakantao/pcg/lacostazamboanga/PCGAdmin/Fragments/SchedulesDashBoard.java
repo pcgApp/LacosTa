@@ -31,7 +31,7 @@ public class SchedulesDashBoard extends Fragment {
     View view;
     RecyclerView depart;
     private DatabaseReference mDatabaseRef;
-    private DatabaseReference childRef,childRef2;
+    private DatabaseReference childRef;
     private LinearLayoutManager linearLayoutManager;
 
 

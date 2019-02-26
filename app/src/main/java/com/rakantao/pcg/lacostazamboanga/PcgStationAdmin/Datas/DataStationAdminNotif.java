@@ -12,13 +12,14 @@ public class DataStationAdminNotif {
     private String NotifStatus;
     private String VesselName;
     private String NotificationType;
+    private String VesselKey;
 
     public DataStationAdminNotif(){
 
     }
 
     public DataStationAdminNotif(String DistressType, String DistressDescription, String DistressRemarks, String Key, String OriginStation,
-                                 String DestinationStation, String NotifDate, String NotifStatus, String VesselName, String NotificationType){
+                                 String DestinationStation, String NotifDate, String NotifStatus, String VesselName, String NotificationType, String VesselKey){
         this.DistressType = DistressType;
         this.DistressDescription = DistressDescription;
         this.DistressRemarks = DistressRemarks;
@@ -29,6 +30,15 @@ public class DataStationAdminNotif {
         this.NotifStatus = NotifStatus;
         this.VesselName = VesselName;
         this.NotificationType = NotificationType;
+        this.VesselKey = VesselKey;
+    }
+
+    public String getVesselKey() {
+        return VesselKey;
+    }
+
+    public void setVesselKey(String vesselKey) {
+        VesselKey = vesselKey;
     }
 
     public String getDistressRemarks() {

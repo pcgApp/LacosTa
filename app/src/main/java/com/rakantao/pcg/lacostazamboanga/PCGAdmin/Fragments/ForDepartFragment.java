@@ -1,19 +1,12 @@
 package com.rakantao.pcg.lacostazamboanga.PCGAdmin.Fragments;
 
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +23,6 @@ import com.rakantao.pcg.lacostazamboanga.PCGAdmin.Activities.DashboardActivity;
 import com.rakantao.pcg.lacostazamboanga.PCGAdmin.Activities.ViewDetailedVessels;
 import com.rakantao.pcg.lacostazamboanga.PCGAdmin.Datas.DataVesselSched;
 import com.rakantao.pcg.lacostazamboanga.PCGAdmin.ViewHolders.PendingViewholder;
-import com.rakantao.pcg.lacostazamboanga.PCGPersonnel.Activities.DetailViewHistoryReportsActivity;
 import com.rakantao.pcg.lacostazamboanga.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
@@ -127,7 +119,7 @@ public class ForDepartFragment extends Fragment {
                         DataVesselSched.class,
                         R.layout.pending_listrow,
                         PendingViewholder.class,
-                        childRef
+                        childRef.limitToLast(5)
                 ) {
                     @Override
                     protected void populateViewHolder(final PendingViewholder viewHolder, final DataVesselSched model, int position) {
@@ -140,15 +132,56 @@ public class ForDepartFragment extends Fragment {
                         viewHolder.arrivaltime.setText(model.getArrivalTime());
                         viewHolder.schedday.setText(model.getScheduleDay());
 
-                        if (model.getDistressStatus().isEmpty()){
-                            Toast.makeText(getContext(), "No Data", Toast.LENGTH_SHORT).show();
+                        if (model.getToAppear().equals("Not Appear")){
+
+                            viewHolder.cardViewPending.setVisibility(View.GONE);
+
+
                         }else {
-                            if (model.getDistressStatus().equals("Distress")){
-                                viewHolder.distressnotifieradmin.setVisibility(View.VISIBLE);
-                            }else {
-                                viewHolder.distressnotifieradmin.setVisibility(View.GONE);
-                            }
+
+                            viewHolder.cardViewPending.setVisibility(View.VISIBLE);
+
                         }
+
+                        DatabaseReference databaseReference99 = FirebaseDatabase.getInstance().getReference();
+
+                        databaseReference99.child("ReportAdmin").child(model.getVesselName()).child(model.getKey()).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()){
+
+                                    viewHolder.vsei.setText(dataSnapshot.child("bordingA").getValue().toString());
+
+                                    viewHolder.tvinfant.setText(dataSnapshot.child("numberInfant").getValue().toString());
+                                    viewHolder.tvchildren.setText(dataSnapshot.child("numberChildren").getValue().toString());
+                                    viewHolder.tvadults.setText(dataSnapshot.child("numberAdult").getValue().toString());
+                                    viewHolder.tvcrew.setText(dataSnapshot.child("numberCrew").getValue().toString());
+                                    viewHolder.totalpassenger.setText(dataSnapshot.child("numberTotalPassenger").getValue().toString());
+
+                                    DatabaseReference fetchData = FirebaseDatabase.getInstance().getReference("Vessels");
+
+                                    fetchData.child(model.getVesselName()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            String getTotal = viewHolder.totalpassenger.getText().toString();
+                                            viewHolder.totalpassenger.setText(getTotal+"/"+dataSnapshot.child("VesselPassengerCapacity").getValue().toString());
+
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+                                }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
 
                         final Handler handler = new Handler();
                         final int delay = 1000; //milliseconds
@@ -183,7 +216,38 @@ public class ForDepartFragment extends Fragment {
 
                                 final long elapsedMinutes = diff / minutesInMilli;
 
-                                viewHolder.runnabletime.setText(elapsedHours+ " Hr(s) : "+ elapsedMinutes+" Min(s)");
+                                if (model.getRemarks().equals("OnHold")){
+                                    viewHolder.runnabletime.setText("On hold");
+                                }else {
+                                    if (elapsedHours <= 0 && elapsedMinutes <=0){
+
+                                        DatabaseReference checkReport5 = FirebaseDatabase.getInstance().getReference();
+
+                                        checkReport5.child("AdminImagesReport").child(model.getVesselName()).child(model.getKey()).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                if (dataSnapshot.exists()){
+
+                                                    viewHolder.runnabletime.setText("Waiting to Substation to Clear");
+
+                                                } else {
+
+                                                    viewHolder.runnabletime.setText("Vessel Not Yet Boarded");
+
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+
+                                    }else {
+                                        viewHolder.runnabletime.setText(elapsedHours+ " Hr(s) : "+ elapsedMinutes+" Min(s)");
+                                    }
+                                }
+
 
                                 handler.postDelayed(this, delay);
                             }
@@ -195,13 +259,14 @@ public class ForDepartFragment extends Fragment {
 
                                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-                                databaseReference.child("AdminImagesReport").child(model.getVesselName()).addValueEventListener(new ValueEventListener() {
+                                databaseReference.child("AdminImagesReport").child(model.getVesselName()).child(model.getKey()).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         if (dataSnapshot.exists()){
                                             //Intent intent = new Intent(getContext(), DetailViewHistoryReportsActivity.class);
                                             Intent intent = new Intent(getContext(), ViewDetailedVessels.class);
                                             intent.putExtra("vesselName", model.getVesselName());
+                                            intent.putExtra("Key", model.getKey());
                                             startActivity(intent);
                                         } else {
                                             Toast.makeText(getContext(), "Vessel is still on scheduled for Inspection", Toast.LENGTH_SHORT).show();
@@ -213,10 +278,6 @@ public class ForDepartFragment extends Fragment {
 
                                     }
                                 });
-
-//                                Intent intent = new Intent(getContext(), DetailViewHistoryReportsActivity.class);
-//                                intent.putExtra("vesselName", model.getVesselName());
-//                                startActivity(intent);
                             }
                         });
 

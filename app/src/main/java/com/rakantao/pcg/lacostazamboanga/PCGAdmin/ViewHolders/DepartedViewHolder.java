@@ -13,13 +13,20 @@ public class DepartedViewHolder extends RecyclerView.ViewHolder {
     public Button btnarrive;
     public Button btnDistress;
     public ImageView imagevessel;
-    public TextView vesselname,ATD,vesseltype,vesselorigin,vesseldesination,vesseldeparttime,vesselarrivetime,vesselschedday,vesselhourstravelled,timefornotif,minfornotif,distressnotifieradmin;
+    public TextView tvchildren,tvadults,tvinfant,tvcrew,totalpassenger;
+    public TextView vesselname,ATD,vesseltype,vesselorigin,vesseldesination,vesseldeparttime,vesselarrivetime,vesselschedday,vesselhourstravelled,timefornotif,minfornotif,distressnotifieradmin,tvvsei;
     View view;
 
 
     public DepartedViewHolder(View itemView) {
         super(itemView);
         view = itemView;
+
+        tvchildren = itemView.findViewById(R.id.TVchildrenAdminDeparted);
+        tvadults = itemView.findViewById(R.id.TVAdultsAdminDeparted);
+        tvinfant = itemView.findViewById(R.id.TVInfantAdminDeparted);
+        tvcrew = itemView.findViewById(R.id.TVcrewAdminDeparted);
+        totalpassenger = itemView.findViewById(R.id.TVTotalAdminDeparted);
 
         btnarrive = itemView.findViewById(R.id.BTNArrived);
         btnDistress = itemView.findViewById(R.id.btnDistress);
@@ -35,6 +42,7 @@ public class DepartedViewHolder extends RecyclerView.ViewHolder {
         vesselschedday = itemView.findViewById(R.id.TVDepartedSchedDay);
         vesselhourstravelled = itemView.findViewById(R.id.TVDepartedHoursTravelled);
         distressnotifieradmin = itemView.findViewById(R.id.TvDistressNotifierad);
+        tvvsei = itemView.findViewById(R.id.TVVSEIdepart);
 
         timefornotif = itemView.findViewById(R.id.hourfornotif);
         minfornotif = itemView.findViewById(R.id.minfornotif);

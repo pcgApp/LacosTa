@@ -34,7 +34,7 @@ public class DetailedReport extends AppCompatActivity {
     private DatabaseReference childRef;
     private LinearLayoutManager linearLayoutManager;
     private DatabaseReference mUserDatabase,databaseReferencenew;
-    String getkey,getVesselname;
+    String getkey,getVesselname,getVesselKey;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -48,6 +48,7 @@ public class DetailedReport extends AppCompatActivity {
 
         getkey = getIntent().getStringExtra("key");
         getVesselname = getIntent().getStringExtra("vesselName");
+        getVesselKey = getIntent().getStringExtra("vesselKey");
 
         vImag1e = findViewById(R.id.DetailReportImage);
 
@@ -88,7 +89,7 @@ public class DetailedReport extends AppCompatActivity {
                         DataImageReport.class,
                         R.layout.detailedvessel_listrow,
                         DetailedVesselViewHolder.class,
-                        childRef.child(getVesselname)
+                        childRef.child(getVesselname).child(getVesselKey)
 
                 ) {
                     @Override
@@ -130,7 +131,7 @@ public class DetailedReport extends AppCompatActivity {
 
                                     databaseReferencenew = FirebaseDatabase.getInstance().getReference();
 
-                                    databaseReferencenew.child("ReportAdmin").child(dataVesselSched.getVesselName()).addValueEventListener(new ValueEventListener() {
+                                    databaseReferencenew.child("ReportAdmin").child(dataVesselSched.getVesselName()).child(dataVesselSched.getKey()).addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             if (dataSnapshot.exists()){

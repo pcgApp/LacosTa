@@ -94,6 +94,7 @@
                 android:text="Destination" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
+
         <com.wrapp.floatlabelededittext.FloatLabeledEditText
             float:fletTextAppearance="@color/white"
             android:layout_width="match_parent"

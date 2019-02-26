@@ -16,7 +16,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="211dp"
+        android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:orientation="horizontal">
 
@@ -94,7 +94,166 @@
                 android:textColor="@color/black"
                 android:textSize="13sp" />
 
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="VSEI" />
+
+            <TextView
+                android:id="@+id/TVVSEIdepart"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+
+            <TextView
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:layout_gravity="center_horizontal"
+                android:text="Passenger Details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:gravity="center"
+                android:weightSum="4"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Adults"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Children"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Infant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Crew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:gravity="center"
+                android:weightSum="10"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/TVAdultsAdminDeparted"
+                    android:layout_weight="2"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="N/A"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/TVchildrenAdminDeparted"
+                    android:layout_weight="2"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="N/A"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/TVInfantAdminDeparted"
+                    android:layout_weight="2"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="N/A"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/TVcrewAdminDeparted"
+                    android:layout_weight="0"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="N/A"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:text="TOTAL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/TVTotalAdminDeparted"
+                android:textSize="20dp"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:text="N/A"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom">
+
+
+                <Button
+                    android:id="@+id/BTNArrived"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Arrive"
+                    android:textColor="#5b2eae" />
+
+                <Button
+                    android:layout_marginLeft="15dp"
+                    android:id="@+id/btnDistress"
+                    android:layout_width="90dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Distress"
+                    android:textColor="#5b2eae" />
+            </LinearLayout>
+
         </LinearLayout>
+
 
         <ImageView
             android:id="@+id/TVDepartedImageVessel"
@@ -104,36 +263,8 @@
             android:layout_margin="10dp"
             android:scaleType="fitXY"
             android:src="@drawable/qz" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom">
-
-
-            <Button
-                android:id="@+id/BTNArrived"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="5dp"
-                android:text="Arrive"
-                android:textColor="#5b2eae" />
-
-            <Button
-                android:layout_marginLeft="15dp"
-                android:id="@+id/btnDistress"
-                android:layout_width="90dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="5dp"
-                android:text="Distress"
-                android:textColor="#5b2eae" />
-        </LinearLayout>
-
-
         <LinearLayout
             android:gravity="center"
-            android:padding="10dp"
             android:layout_gravity="bottom|right"
             android:orientation="vertical"
             android:layout_width="wrap_content"
